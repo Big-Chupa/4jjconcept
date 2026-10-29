@@ -148,12 +148,12 @@ const StudentDashboard = ({ currentUser, onLogout, onBackToSite }) => {
 
             <button onClick={onBackToSite} className="btn-portal-secondary">
               <ArrowLeft size={14} />
-              <span>Back to Website</span>
+              <span className="nav-btn-text">Back to Website</span>
             </button>
 
             <button onClick={onLogout} className="btn-portal-logout" title="Sign Out">
               <LogOut size={16} />
-              <span>Logout</span>
+              <span className="nav-btn-text">Logout</span>
             </button>
           </div>
         </div>

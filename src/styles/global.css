@@ -273,6 +273,10 @@ button, input, textarea, select {
 
 /* Responsive Utilities */
 @media (max-width: 768px) {
+  .container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
   .section {
     padding: 4rem 0;
   }

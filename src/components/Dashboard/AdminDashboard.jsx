@@ -156,17 +156,17 @@ const AdminDashboard = ({ currentUser, onLogout, onBackToSite }) => {
           <div className="admin-user-nav">
             <div className="admin-info-pill">
               <span className="live-dot"></span>
-              <span>Authenticated Admin: {currentUser.name}</span>
+              <span className="admin-info-text">Admin: {currentUser.name}</span>
             </div>
 
             <button onClick={onBackToSite} className="btn-portal-secondary">
               <ArrowLeft size={14} />
-              <span>Back to Website</span>
+              <span className="nav-btn-text">Back to Website</span>
             </button>
 
             <button onClick={onLogout} className="btn-portal-logout" title="Sign Out">
               <LogOut size={16} />
-              <span>Logout</span>
+              <span className="nav-btn-text">Logout</span>
             </button>
           </div>
         </div>
@@ -258,6 +258,9 @@ const AdminDashboard = ({ currentUser, onLogout, onBackToSite }) => {
         </div>
 
         {/* Table of Submissions */}
+        <div className="table-scroll-hint">
+          <span>⇄ Swipe table horizontally to view all columns</span>
+        </div>
         <div className="admin-table-container">
           {filteredProjects.length === 0 ? (
             <div style={{ padding: '3.5rem', textAlign: 'center', color: '#64748B' }}>
