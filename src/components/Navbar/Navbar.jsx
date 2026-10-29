@@ -10,8 +10,28 @@ const Navbar = ({ onOpenAuth, currentUser, onOpenDashboard, onLogout }) => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 30);
     };
+
+    const handleResize = () => {
+      if (window.innerWidth > 980) {
+        setIsMobileMenuOpen(false);
+      }
+    };
+
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        setIsMobileMenuOpen(false);
+      }
+    };
+
     window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener('resize', handleResize);
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', handleResize);
+      window.removeEventListener('keydown', handleKeyDown);
+    };
   }, []);
 
   const navLinks = [
@@ -131,14 +151,25 @@ const Navbar = ({ onOpenAuth, currentUser, onOpenDashboard, onLogout }) => {
 
           {/* Mobile Menu Toggle */}
           <button 
+            type="button"
             className="mobile-toggle" 
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            aria-label="Toggle navigation menu"
+            aria-label={isMobileMenuOpen ? "Close navigation menu" : "Open navigation menu"}
+            aria-expanded={isMobileMenuOpen}
           >
             {isMobileMenuOpen ? <X size={26} /> : <Menu size={26} />}
           </button>
         </div>
       </div>
+
+      {/* Dim Backdrop for Mobile Menu */}
+      {isMobileMenuOpen && (
+        <div 
+          className="mobile-menu-backdrop" 
+          onClick={() => setIsMobileMenuOpen(false)}
+          aria-hidden="true"
+        />
+      )}
 
       {/* Mobile Menu Drawer */}
       <div className={`mobile-menu ${isMobileMenuOpen ? 'open' : ''}`}>
