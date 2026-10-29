@@ -1,0 +1,64 @@
+{
+  "users": [
+    {
+      "id": "user_admin_default",
+      "name": "4JJCONCEPT Admin",
+      "email": "jesuniyi4wealth@gmail.com",
+      "phone": "08037696091",
+      "password": "$2b$10$sCuPoTA4rR/5uOu4NiqMw.AeFohY1l4Sg8nbrO0cIggqaGqq51Ipy",
+      "institution": "4JJCONCEPT Headquarters",
+      "department": "Lead Statistician Desk",
+      "role": "admin",
+      "createdAt": "2026-10-29T00:00:00.000Z"
+    },
+    {
+      "id": "user_1793291322355",
+      "name": "Tunde Bakare",
+      "email": "tunde@example.com",
+      "phone": "08012345678",
+      "institution": "UNILAG",
+      "department": "Finance",
+      "password": "mypassword",
+      "role": "student",
+      "createdAt": "2026-10-29T16:28:42.355Z"
+    },
+    {
+      "id": "user_1793291593927",
+      "name": "Amos Samuel",
+      "email": "amoschupa2002@gmail.com",
+      "phone": "08169563984",
+      "institution": "unilorin",
+      "department": "computer science",
+      "password": "sambright12",
+      "role": "student",
+      "createdAt": "2026-10-29T16:33:13.927Z"
+    }
+  ],
+  "projects": [
+    {
+      "id": "PROJ-3125",
+      "studentId": "user_1793291593927",
+      "studentName": "Amos Samuel",
+      "studentEmail": "amoschupa2002@gmail.com",
+      "studentPhone": "08169563984",
+      "title": "dementia detection",
+      "degreeLevel": "B.Sc / HND",
+      "department": "computer science",
+      "institution": "unilorin",
+      "preferredTool": "Python Data Science",
+      "submissionDate": "Oct 29, 2026, 04:34 AM",
+      "status": "in_progress",
+      "studentNotes": "",
+      "chapter1to3Files": [
+        {
+          "id": "f_1793291677565_default",
+          "name": "Amos_Samuel_Chapters_1_to_3.docx",
+          "systemName": null,
+          "size": "1.8 MB",
+          "uploadedAt": "10/29/2026"
+        }
+      ],
+      "deliverables": null
+    }
+  ]
+}

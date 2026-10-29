@@ -1,0 +1,111 @@
+.testimonials-section {
+  background: #FFFFFF;
+}
+
+.testimonials-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.75rem;
+}
+
+.testimonial-card {
+  background: var(--color-bg-light);
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  border-radius: var(--radius-lg);
+  padding: 2.25rem;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  transition: all var(--transition-normal);
+}
+
+.testimonial-card:hover {
+  transform: translateY(-5px);
+  background: #FFFFFF;
+  border-color: rgba(0, 210, 160, 0.4);
+  box-shadow: 0 16px 32px rgba(15, 23, 42, 0.06);
+}
+
+.card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.25rem;
+}
+
+.star-row {
+  display: flex;
+  gap: 3px;
+}
+
+.quote-icon {
+  color: var(--color-accent-emerald);
+  opacity: 0.5;
+}
+
+.review-quote {
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: #334155;
+  font-style: italic;
+  margin-bottom: 1.75rem;
+  flex-grow: 1;
+}
+
+.reviewer-info {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid #E2E8F0;
+  margin-bottom: 1rem;
+}
+
+.reviewer-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-full);
+  background: rgba(10, 17, 40, 0.08);
+  color: var(--color-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.reviewer-name {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--color-primary);
+  line-height: 1.2;
+}
+
+.reviewer-role {
+  display: block;
+  font-size: 0.8125rem;
+  color: #64748B;
+  margin-top: 0.15rem;
+}
+
+.reviewer-inst {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--color-accent-emerald);
+}
+
+.review-software-badge {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #475569;
+  background: rgba(226, 232, 240, 0.6);
+  padding: 0.3rem 0.75rem;
+  border-radius: var(--radius-full);
+  align-self: flex-start;
+}
+
+@media (max-width: 900px) {
+  .testimonials-grid {
+    grid-template-columns: 1fr;
+  }
+}

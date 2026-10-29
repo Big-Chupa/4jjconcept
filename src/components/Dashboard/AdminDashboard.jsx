@@ -1,0 +1,529 @@
+import React, { useState, useEffect } from 'react';
+import { 
+  ShieldCheck, 
+  FileText, 
+  Download, 
+  Upload, 
+  CheckCircle2, 
+  Clock, 
+  Search, 
+  ArrowLeft,
+  LogOut, 
+  X, 
+  MessageSquare, 
+  Send,
+  AlertTriangle
+} from 'lucide-react';
+import { api } from '../../services/api';
+import './AdminDashboard.css';
+
+const AdminDashboard = ({ currentUser, onLogout, onBackToSite }) => {
+  const [projects, setProjects] = useState([]);
+  const [filterStatus, setFilterStatus] = useState('all');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedProject, setSelectedProject] = useState(null);
+
+  // Delivery Modal State
+  const [reportFile, setReportFile] = useState(null);
+  const [dataFile, setDataFile] = useState(null);
+  const [deliveryData, setDeliveryData] = useState({
+    reportFileName: '4JJCONCEPT_Chapter_4_and_5_Final_Report.docx',
+    dataFileName: 'SPSS_Analyzed_Output.sav',
+    adminNotes: 'Analysis completed. Multiple linear regression and ANOVA conducted to test all research hypotheses. Descriptive tables, diagnostic tests, and Chapter 5 discussion/recommendations have been prepared strictly to APA 7th standards.'
+  });
+
+  const [deliveryLoading, setDeliveryLoading] = useState(false);
+  const [deliverySuccess, setDeliverySuccess] = useState(false);
+  const [errorMsg, setErrorMsg] = useState('');
+
+  const loadProjects = async () => {
+    if (!currentUser?.id) return;
+    try {
+      const data = await api.getProjects(currentUser.id);
+      setProjects(data);
+    } catch (err) {
+      console.error('Error fetching admin projects:', err);
+    }
+  };
+
+  useEffect(() => {
+    loadProjects();
+  }, [currentUser]);
+
+  // Security check: Only role === 'admin' can view
+  if (!currentUser || currentUser.role !== 'admin') {
+    return (
+      <div className="admin-page">
+        <div className="container" style={{ padding: '4rem 1rem', textAlign: 'center' }}>
+          <div style={{ maxWidth: '480px', margin: '0 auto', background: '#FFFFFF', padding: '2.5rem', borderRadius: '16px', border: '1px solid #E2E8F0', boxShadow: '0 10px 25px rgba(0,0,0,0.05)' }}>
+            <AlertTriangle size={48} color="#EF4444" style={{ marginBottom: '1rem' }} />
+            <h3 style={{ fontSize: '1.4rem', color: '#0A1128', marginBottom: '0.75rem' }}>Access Denied</h3>
+            <p style={{ color: '#64748B', fontSize: '0.9rem', lineHeight: '1.6', marginBottom: '1.5rem' }}>
+              Only accounts with <strong>"role": "admin"</strong> in the database (<code>server/db.json</code>) can access the Admin Dashboard.
+            </p>
+            <p style={{ fontSize: '0.8rem', color: '#94A3B8', marginBottom: '1.5rem' }}>
+              To access this page, open <code>server/db.json</code> and change your user's role to <code>"admin"</code>, then sign back in.
+            </p>
+            <button onClick={onBackToSite} className="btn btn-primary w-100">
+              Return to Website
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  const filteredProjects = projects.filter(p => {
+    const matchesFilter = filterStatus === 'all' || p.status === filterStatus;
+    const matchesSearch = 
+      p.title?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      p.studentName?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      p.id?.toLowerCase().includes(searchQuery.toLowerCase());
+    return matchesFilter && matchesSearch;
+  });
+
+  const handleStatusChange = async (projectId, newStatus) => {
+    try {
+      await api.updateStatus(projectId, currentUser.id, newStatus);
+      await loadProjects();
+      if (selectedProject?.id === projectId) {
+        setSelectedProject(prev => ({ ...prev, status: newStatus }));
+      }
+    } catch (err) {
+      alert(err.message || 'Error updating status.');
+    }
+  };
+
+  const handleDeliverReport = async (e) => {
+    e.preventDefault();
+    if (!selectedProject) return;
+
+    setDeliveryLoading(true);
+    setErrorMsg('');
+
+    try {
+      const formData = new FormData();
+      formData.append('adminId', currentUser.id);
+      formData.append('adminNotes', deliveryData.adminNotes);
+      formData.append('reportFileName', deliveryData.reportFileName);
+      formData.append('dataFileName', deliveryData.dataFileName);
+
+      if (reportFile) {
+        formData.append('reportFile', reportFile);
+      }
+      if (dataFile) {
+        formData.append('dataFile', dataFile);
+      }
+
+      await api.deliverReport(selectedProject.id, formData);
+
+      setDeliveryLoading(false);
+      setDeliverySuccess(true);
+      await loadProjects();
+
+      setTimeout(() => {
+        setDeliverySuccess(false);
+        setSelectedProject(null);
+        setReportFile(null);
+        setDataFile(null);
+      }, 1500);
+    } catch (err) {
+      setDeliveryLoading(false);
+      setErrorMsg(err.message || 'Error delivering report.');
+    }
+  };
+
+  const downloadFile = (systemName, fileName) => {
+    const url = api.getFileDownloadUrl(systemName, fileName);
+    window.open(url, '_blank');
+  };
+
+  return (
+    <div className="admin-page">
+      {/* Admin Topbar */}
+      <header className="admin-topbar">
+        <div className="container admin-topbar-inner">
+          <div className="admin-brand" onClick={onBackToSite}>
+            <div className="admin-brand-icon">
+              <ShieldCheck size={20} />
+            </div>
+            <div>
+              <span className="admin-brand-name">4JJCONCEPT</span>
+              <span className="admin-badge">Admin Control Center</span>
+            </div>
+          </div>
+
+          <div className="admin-user-nav">
+            <div className="admin-info-pill">
+              <span className="live-dot"></span>
+              <span>Authenticated Admin: {currentUser.name}</span>
+            </div>
+
+            <button onClick={onBackToSite} className="btn-portal-secondary">
+              <ArrowLeft size={14} />
+              <span>Back to Website</span>
+            </button>
+
+            <button onClick={onLogout} className="btn-portal-logout" title="Sign Out">
+              <LogOut size={16} />
+              <span>Logout</span>
+            </button>
+          </div>
+        </div>
+      </header>
+
+      {/* Main Admin Content */}
+      <main className="container admin-content">
+        <div className="admin-header-row">
+          <div>
+            <h2>Research Management Dashboard</h2>
+            <p>
+              Review uploaded student <strong>Chapters 1 to 3</strong>, update work progress, and deliver completed <strong>Chapter 4 &amp; 5</strong> reports back to students.
+            </p>
+          </div>
+        </div>
+
+        {/* Analytics Counters */}
+        <div className="admin-metrics-grid">
+          <div className="admin-metric-box">
+            <span className="m-label">Total Submissions</span>
+            <span className="m-val">{projects.length}</span>
+            <span className="m-sub">Database records (server/db.json)</span>
+          </div>
+
+          <div className="admin-metric-box">
+            <span className="m-label">Pending Review</span>
+            <span className="m-val text-amber">
+              {projects.filter(p => p.status === 'pending').length}
+            </span>
+            <span className="m-sub">New student submissions</span>
+          </div>
+
+          <div className="admin-metric-box">
+            <span className="m-label">In Progress (Ch 4 &amp; 5)</span>
+            <span className="m-val text-blue">
+              {projects.filter(p => p.status === 'in_progress').length}
+            </span>
+            <span className="m-sub">Analyses underway</span>
+          </div>
+
+          <div className="admin-metric-box">
+            <span className="m-label">Delivered Reports</span>
+            <span className="m-val text-emerald">
+              {projects.filter(p => p.status === 'completed').length}
+            </span>
+            <span className="m-sub">Dispatched to student dashboard</span>
+          </div>
+        </div>
+
+        {/* Search & Filter Bar */}
+        <div className="admin-controls-card">
+          <div className="search-wrap">
+            <Search size={18} className="search-icon" />
+            <input 
+              type="text" 
+              placeholder="Search by topic, student name, or Project ID..." 
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="admin-search-input"
+            />
+          </div>
+
+          <div className="filter-tabs">
+            <button 
+              className={`f-tab ${filterStatus === 'all' ? 'active' : ''}`}
+              onClick={() => setFilterStatus('all')}
+            >
+              All ({projects.length})
+            </button>
+            <button 
+              className={`f-tab ${filterStatus === 'pending' ? 'active' : ''}`}
+              onClick={() => setFilterStatus('pending')}
+            >
+              Pending ({projects.filter(p => p.status === 'pending').length})
+            </button>
+            <button 
+              className={`f-tab ${filterStatus === 'in_progress' ? 'active' : ''}`}
+              onClick={() => setFilterStatus('in_progress')}
+            >
+              In Progress ({projects.filter(p => p.status === 'in_progress').length})
+            </button>
+            <button 
+              className={`f-tab ${filterStatus === 'completed' ? 'active' : ''}`}
+              onClick={() => setFilterStatus('completed')}
+            >
+              Delivered ({projects.filter(p => p.status === 'completed').length})
+            </button>
+          </div>
+        </div>
+
+        {/* Table of Submissions */}
+        <div className="admin-table-container">
+          {filteredProjects.length === 0 ? (
+            <div style={{ padding: '3.5rem', textAlign: 'center', color: '#64748B' }}>
+              <p>No project submissions found matching your search.</p>
+            </div>
+          ) : (
+            <table className="admin-table">
+              <thead>
+                <tr>
+                  <th>Project ID</th>
+                  <th>Student Researcher</th>
+                  <th>Research Topic</th>
+                  <th>Degree / Tool</th>
+                  <th>Status</th>
+                  <th>Uploaded Chapters 1-3</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {filteredProjects.map((proj) => (
+                  <tr key={proj.id} className={`tr-status-${proj.status}`}>
+                    <td className="td-id">
+                      <strong>{proj.id}</strong>
+                      <span className="date-sub">{proj.submissionDate?.split(' ')[0]}</span>
+                    </td>
+                    <td className="td-student">
+                      <div className="student-cell">
+                        <strong>{proj.studentName}</strong>
+                        <span>{proj.studentEmail}</span>
+                        <span className="phone-tag">{proj.studentPhone || '08037696091'}</span>
+                      </div>
+                    </td>
+                    <td className="td-topic">
+                      <div className="topic-clamp" title={proj.title}>
+                        {proj.title}
+                      </div>
+                      <span className="inst-tag">{proj.department} • {proj.institution}</span>
+                    </td>
+                    <td className="td-degree">
+                      <span className="degree-pill">{proj.degreeLevel}</span>
+                      <span className="tool-pill">{proj.preferredTool}</span>
+                    </td>
+                    <td className="td-status">
+                      {proj.status === 'pending' && (
+                        <span className="status-pill pending">Pending Review</span>
+                      )}
+                      {proj.status === 'in_progress' && (
+                        <span className="status-pill in_progress">Analyzing Ch 4 &amp; 5</span>
+                      )}
+                      {proj.status === 'completed' && (
+                        <span className="status-pill completed">Report Delivered</span>
+                      )}
+                    </td>
+                    <td className="td-files">
+                      <div className="files-list">
+                        {proj.chapter1to3Files?.map((f, i) => (
+                          <button 
+                            key={i} 
+                            onClick={() => downloadFile(f.systemName, f.name)}
+                            className="file-btn"
+                            title={`Download ${f.name}`}
+                          >
+                            <FileText size={12} />
+                            <span>{f.name.length > 20 ? `${f.name.substring(0, 18)}...` : f.name}</span>
+                          </button>
+                        ))}
+                      </div>
+                    </td>
+                    <td className="td-action">
+                      <button 
+                        onClick={() => setSelectedProject(proj)}
+                        className="btn btn-primary btn-sm btn-manage"
+                      >
+                        {proj.status === 'completed' ? 'View Delivery' : 'Work & Deliver'}
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
+        </div>
+      </main>
+
+      {/* Admin Action & Report Delivery Modal */}
+      {selectedProject && (
+        <div className="modal-overlay" onClick={() => setSelectedProject(null)}>
+          <div className="modal-container admin-action-modal" onClick={(e) => e.stopPropagation()}>
+            <button 
+              className="modal-close-btn" 
+              onClick={() => setSelectedProject(null)}
+            >
+              <X size={20} />
+            </button>
+
+            {deliverySuccess ? (
+              <div className="delivery-success-view">
+                <CheckCircle2 size={54} className="success-icon" />
+                <h3>Chapter 4 &amp; 5 Report Delivered!</h3>
+                <p>
+                  The report has been saved to the database and is now downloadable on <strong>{selectedProject.studentName}</strong>'s dashboard.
+                </p>
+              </div>
+            ) : (
+              <div className="admin-modal-inner">
+                {/* Modal Header */}
+                <div className="admin-modal-header">
+                  <div className="project-headline">
+                    <span className="proj-pill">{selectedProject.id}</span>
+                    <span className={`status-pill ${selectedProject.status}`}>
+                      {selectedProject.status === 'completed' ? 'Delivered' : selectedProject.status}
+                    </span>
+                  </div>
+                  <h3>{selectedProject.title}</h3>
+                  <div className="student-quick-bar">
+                    <span><strong>Student:</strong> {selectedProject.studentName}</span>
+                    <span>•</span>
+                    <span><strong>Phone:</strong> {selectedProject.studentPhone || '08037696091'}</span>
+                    <span>•</span>
+                    <span><strong>Tool:</strong> {selectedProject.preferredTool}</span>
+                  </div>
+                </div>
+
+                {errorMsg && <div className="auth-error-banner">{errorMsg}</div>}
+
+                {/* Step 1: Inspect Uploaded Chapter 1-3 Files */}
+                <div className="modal-block">
+                  <h4 className="block-title">
+                    <Download size={16} />
+                    <span>Student's Uploaded Chapters 1 to 3 &amp; Data:</span>
+                  </h4>
+                  <div className="modal-file-list">
+                    {selectedProject.chapter1to3Files?.map((f, i) => (
+                      <div key={i} className="inspect-file-item">
+                        <div className="file-desc">
+                          <FileText size={18} className="file-icon" />
+                          <div>
+                            <strong>{f.name}</strong>
+                            <span>Size: {f.size} • Uploaded: {f.uploadedAt}</span>
+                          </div>
+                        </div>
+                        <button 
+                          onClick={() => downloadFile(f.systemName, f.name)}
+                          className="btn btn-outline btn-sm"
+                        >
+                          <Download size={14} />
+                          <span>Download File</span>
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+
+                  {selectedProject.studentNotes && (
+                    <div className="student-notes-box">
+                      <strong>Student Special Notes:</strong>
+                      <p>"{selectedProject.studentNotes}"</p>
+                    </div>
+                  )}
+                </div>
+
+                {/* Step 2: Status Switcher */}
+                <div className="modal-block">
+                  <h4 className="block-title">
+                    <Clock size={16} />
+                    <span>Update Analysis Progress:</span>
+                  </h4>
+                  <div className="status-toggle-row">
+                    <button 
+                      onClick={() => handleStatusChange(selectedProject.id, 'pending')}
+                      className={`status-btn ${selectedProject.status === 'pending' ? 'active-amber' : ''}`}
+                    >
+                      Pending Review
+                    </button>
+                    <button 
+                      onClick={() => handleStatusChange(selectedProject.id, 'in_progress')}
+                      className={`status-btn ${selectedProject.status === 'in_progress' ? 'active-blue' : ''}`}
+                    >
+                      In Progress (Analyzing Ch 4 &amp; 5)
+                    </button>
+                    <button 
+                      onClick={() => handleStatusChange(selectedProject.id, 'completed')}
+                      className={`status-btn ${selectedProject.status === 'completed' ? 'active-emerald' : ''}`}
+                    >
+                      Completed
+                    </button>
+                  </div>
+                </div>
+
+                {/* Step 3: Deliver Completed Chapter 4 & 5 Report */}
+                <form onSubmit={handleDeliverReport} className="modal-block deliver-block">
+                  <h4 className="block-title text-emerald">
+                    <Upload size={16} />
+                    <span>Upload &amp; Deliver Completed Chapter 4 &amp; 5 Report:</span>
+                  </h4>
+
+                  <div className="form-group mb-3">
+                    <label className="form-label">Attach Completed Chapter 4 &amp; 5 Document (.docx / .pdf)</label>
+                    <input 
+                      type="file" 
+                      accept=".docx,.doc,.pdf" 
+                      onChange={(e) => setReportFile(e.target.files[0])}
+                      className="form-control"
+                    />
+                    <small style={{ color: '#64748B', display: 'block', marginTop: '0.25rem' }}>
+                      Selected: {reportFile ? reportFile.name : deliveryData.reportFileName}
+                    </small>
+                  </div>
+
+                  <div className="form-group mb-3">
+                    <label className="form-label">Attach Analyzed Dataset / SPSS File (Optional)</label>
+                    <input 
+                      type="file" 
+                      accept=".sav,.xlsx,.csv,.dta" 
+                      onChange={(e) => setDataFile(e.target.files[0])}
+                      className="form-control"
+                    />
+                    <small style={{ color: '#64748B', display: 'block', marginTop: '0.25rem' }}>
+                      Selected: {dataFile ? dataFile.name : deliveryData.dataFileName}
+                    </small>
+                  </div>
+
+                  <div className="form-group mb-4">
+                    <label className="form-label">Analyst Remarks &amp; Defense Notes for Student *</label>
+                    <textarea 
+                      rows="3"
+                      required
+                      value={deliveryData.adminNotes}
+                      onChange={(e) => setDeliveryData({ ...deliveryData, adminNotes: e.target.value })}
+                      className="form-control"
+                    ></textarea>
+                  </div>
+
+                  <div className="modal-deliver-actions">
+                    <button 
+                      type="submit" 
+                      disabled={deliveryLoading}
+                      className="btn btn-primary w-100 deliver-btn"
+                    >
+                      {deliveryLoading ? (
+                        <span>Saving &amp; Delivering Report...</span>
+                      ) : (
+                        <>
+                          <Send size={16} />
+                          <span>Send Completed Report Back to Student Dashboard</span>
+                        </>
+                      )}
+                    </button>
+
+                    <a 
+                      href={`https://wa.me/234${(selectedProject.studentPhone || '08037696091').replace(/^0/, '')}?text=Hello%20${encodeURIComponent(selectedProject.studentName)}%2C%20this%20is%204JJCONCEPT%20regarding%20your%20project%20${selectedProject.id}.`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="btn btn-whatsapp w-100 mt-2"
+                    >
+                      <MessageSquare size={16} />
+                      <span>Message Student on WhatsApp ({selectedProject.studentPhone || '08037696091'})</span>
+                    </a>
+                  </div>
+                </form>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default AdminDashboard;

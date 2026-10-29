@@ -1,0 +1,132 @@
+.why-us-section {
+  background: var(--color-bg-alt);
+}
+
+.why-us-grid {
+  display: grid;
+  grid-template-columns: 0.85fr 1.15fr;
+  gap: 4rem;
+  align-items: center;
+}
+
+.why-us-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.why-us-title {
+  font-size: clamp(2rem, 3.2vw, 2.75rem);
+  font-weight: 800;
+  line-height: 1.2;
+  margin-bottom: 1.5rem;
+}
+
+.why-us-desc {
+  font-size: 1.05rem;
+  line-height: 1.7;
+  color: var(--color-text-muted);
+  margin-bottom: 2rem;
+}
+
+.why-us-stat-box {
+  background: #FFFFFF;
+  border-radius: var(--radius-md);
+  padding: 1.25rem 1.5rem;
+  border: 1px solid rgba(0, 210, 160, 0.3);
+  box-shadow: 0 4px 15px rgba(0, 210, 160, 0.1);
+  margin-bottom: 2rem;
+}
+
+.stat-pill-row {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+.stat-pill-number {
+  font-family: var(--font-heading);
+  font-size: 2.2rem;
+  font-weight: 900;
+  color: var(--color-accent-emerald);
+}
+
+.stat-pill-text {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--color-primary);
+  line-height: 1.4;
+}
+
+.why-us-btn {
+  align-self: flex-start;
+  padding: 0.9rem 2rem;
+}
+
+/* Right Grid */
+.why-us-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.25rem;
+}
+
+.advantage-card {
+  background: #FFFFFF;
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  border-radius: var(--radius-lg);
+  padding: 1.75rem 1.5rem;
+  transition: all var(--transition-normal);
+  display: flex;
+  flex-direction: column;
+}
+
+.advantage-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(0, 210, 160, 0.4);
+  box-shadow: 0 12px 24px rgba(15, 23, 42, 0.06);
+}
+
+.advantage-icon-wrapper {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-md);
+  background: rgba(10, 17, 40, 0.05);
+  color: var(--color-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.25rem;
+  transition: all var(--transition-normal);
+}
+
+.advantage-card:hover .advantage-icon-wrapper {
+  background: var(--color-accent-emerald);
+  color: #060B19;
+  transform: scale(1.08);
+}
+
+.advantage-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--color-primary);
+  margin-bottom: 0.6rem;
+  line-height: 1.35;
+}
+
+.advantage-desc {
+  font-size: 0.875rem;
+  color: var(--color-text-muted);
+  line-height: 1.6;
+}
+
+@media (max-width: 1024px) {
+  .why-us-grid {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .why-us-cards-grid {
+    grid-template-columns: 1fr;
+  }
+}
