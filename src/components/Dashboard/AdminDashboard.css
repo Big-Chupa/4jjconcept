@@ -415,6 +415,46 @@
   color: var(--color-accent-emerald);
 }
 
+.td-service {
+  white-space: nowrap;
+}
+
+.service-type-badge {
+  font-size: 0.725rem;
+  font-weight: 700;
+  padding: 0.2rem 0.55rem;
+  border-radius: var(--radius-full);
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.service-type-badge.full_project {
+  background: rgba(0, 210, 160, 0.15);
+  color: #047857;
+  border: 1px solid rgba(0, 210, 160, 0.35);
+}
+
+.service-type-badge.chapter_4_5 {
+  background: rgba(0, 180, 216, 0.15);
+  color: #0284C7;
+  border: 1px solid rgba(0, 180, 216, 0.35);
+}
+
+.service-type-badge.proposal {
+  background: rgba(245, 158, 11, 0.15);
+  color: #D97706;
+  border: 1px solid rgba(245, 158, 11, 0.35);
+}
+
+.no-file-pill {
+  font-size: 0.725rem;
+  color: #64748B;
+  background: #F1F5F9;
+  padding: 0.2rem 0.5rem;
+  border-radius: var(--radius-sm);
+  display: inline-block;
+}
+
 .status-pill {
   font-size: 0.725rem;
   font-weight: 700;

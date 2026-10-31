@@ -27,14 +27,39 @@ const AdminDashboard = ({ currentUser, onLogout, onBackToSite }) => {
   const [reportFile, setReportFile] = useState(null);
   const [dataFile, setDataFile] = useState(null);
   const [deliveryData, setDeliveryData] = useState({
-    reportFileName: '4JJCONCEPT_Chapter_4_and_5_Final_Report.docx',
-    dataFileName: 'SPSS_Analyzed_Output.sav',
-    adminNotes: 'Analysis completed. Multiple linear regression and ANOVA conducted to test all research hypotheses. Descriptive tables, diagnostic tests, and Chapter 5 discussion/recommendations have been prepared strictly to APA 7th standards.'
+    reportFileName: '4JJCONCEPT_Full_Project_Complete_Ch1_to_5.docx',
+    dataFileName: '4JJCONCEPT_Analyzed_Output.sav',
+    adminNotes: 'Full project (Chapters 1 to 5) has been completed from scratch based on your research topic. Includes complete background, literature review with recent citations, scientific methodology, empirical Chapter 4 analysis with APA 7th tables, and Chapter 5 discussion/recommendations.'
   });
 
   const [deliveryLoading, setDeliveryLoading] = useState(false);
   const [deliverySuccess, setDeliverySuccess] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
+
+  // Automatically update default filenames and remarks when a project is selected
+  useEffect(() => {
+    if (selectedProject) {
+      if (selectedProject.serviceType === 'full_project') {
+        setDeliveryData({
+          reportFileName: '4JJCONCEPT_Full_Project_Complete_Ch1_to_5.docx',
+          dataFileName: '4JJCONCEPT_Analyzed_Output.sav',
+          adminNotes: 'Full project (Chapters 1 to 5) has been completed from scratch based on your research topic. Includes complete background, literature review with recent citations, scientific methodology, empirical Chapter 4 analysis with APA 7th tables, and Chapter 5 discussion/recommendations strictly to APA 7th standards.'
+        });
+      } else if (selectedProject.serviceType === 'proposal') {
+        setDeliveryData({
+          reportFileName: '4JJCONCEPT_Research_Proposal_Synopsis.docx',
+          dataFileName: 'Research_Instruments_Questionnaire.docx',
+          adminNotes: 'Research proposal developed with problem statement, research questions, theoretical framework, and proposed methodology ready for departmental defense.'
+        });
+      } else {
+        setDeliveryData({
+          reportFileName: '4JJCONCEPT_Chapter_4_and_5_Final_Report.docx',
+          dataFileName: 'SPSS_Analyzed_Output.sav',
+          adminNotes: 'Analysis completed. Multiple linear regression and ANOVA conducted to test all research hypotheses. Descriptive tables, diagnostic tests, and Chapter 5 discussion/recommendations have been prepared strictly to APA 7th standards.'
+        });
+      }
+    }
+  }, [selectedProject]);
 
   const loadProjects = async () => {
     if (!currentUser?.id) return;
@@ -178,7 +203,7 @@ const AdminDashboard = ({ currentUser, onLogout, onBackToSite }) => {
           <div>
             <h2>Research Management Dashboard</h2>
             <p>
-              Review uploaded student <strong>Chapters 1 to 3</strong>, update work progress, and deliver completed <strong>Chapter 4 &amp; 5</strong> reports back to students.
+              Manage all student research projects: <strong>Full Project Writing (Chapters 1 to 5)</strong>, <strong>Chapter 4 &amp; 5 Empirical Analysis</strong>, and <strong>Research Proposals</strong>.
             </p>
           </div>
         </div>
@@ -200,15 +225,15 @@ const AdminDashboard = ({ currentUser, onLogout, onBackToSite }) => {
           </div>
 
           <div className="admin-metric-box">
-            <span className="m-label">In Progress (Ch 4 &amp; 5)</span>
+            <span className="m-label">In Progress (Writing &amp; Analysis)</span>
             <span className="m-val text-blue">
               {projects.filter(p => p.status === 'in_progress').length}
             </span>
-            <span className="m-sub">Analyses underway</span>
+            <span className="m-sub">Active projects underway</span>
           </div>
 
           <div className="admin-metric-box">
-            <span className="m-label">Delivered Reports</span>
+            <span className="m-label">Delivered Projects</span>
             <span className="m-val text-emerald">
               {projects.filter(p => p.status === 'completed').length}
             </span>
@@ -272,10 +297,11 @@ const AdminDashboard = ({ currentUser, onLogout, onBackToSite }) => {
                 <tr>
                   <th>Project ID</th>
                   <th>Student Researcher</th>
+                  <th>Service</th>
                   <th>Research Topic</th>
                   <th>Degree / Tool</th>
                   <th>Status</th>
-                  <th>Uploaded Chapters 1-3</th>
+                  <th>Materials / Outline</th>
                   <th>Action</th>
                 </tr>
               </thead>
@@ -293,6 +319,13 @@ const AdminDashboard = ({ currentUser, onLogout, onBackToSite }) => {
                         <span className="phone-tag">{proj.studentPhone || '08037696091'}</span>
                       </div>
                     </td>
+                    <td className="td-service">
+                      <span className={`service-type-badge ${proj.serviceType || 'full_project'}`}>
+                        {proj.serviceType === 'chapter_4_5' ? 'Chapter 4 & 5' :
+                         proj.serviceType === 'proposal' ? 'Proposal' :
+                         'Full Project (1-5)'}
+                      </span>
+                    </td>
                     <td className="td-topic">
                       <div className="topic-clamp" title={proj.title}>
                         {proj.title}
@@ -308,25 +341,33 @@ const AdminDashboard = ({ currentUser, onLogout, onBackToSite }) => {
                         <span className="status-pill pending">Pending Review</span>
                       )}
                       {proj.status === 'in_progress' && (
-                        <span className="status-pill in_progress">Analyzing Ch 4 &amp; 5</span>
+                        <span className="status-pill in_progress">
+                          {proj.serviceType === 'full_project' ? 'Writing Ch 1-5' :
+                           proj.serviceType === 'proposal' ? 'Writing Proposal' :
+                           'Analyzing Ch 4 & 5'}
+                        </span>
                       )}
                       {proj.status === 'completed' && (
-                        <span className="status-pill completed">Report Delivered</span>
+                        <span className="status-pill completed">Delivered</span>
                       )}
                     </td>
                     <td className="td-files">
                       <div className="files-list">
-                        {proj.chapter1to3Files?.map((f, i) => (
-                          <button 
-                            key={i} 
-                            onClick={() => downloadFile(f.systemName, f.name)}
-                            className="file-btn"
-                            title={`Download ${f.name}`}
-                          >
-                            <FileText size={12} />
-                            <span>{f.name.length > 20 ? `${f.name.substring(0, 18)}...` : f.name}</span>
-                          </button>
-                        ))}
+                        {proj.chapter1to3Files && proj.chapter1to3Files.length > 0 ? (
+                          proj.chapter1to3Files.map((f, i) => (
+                            <button 
+                              key={i} 
+                              onClick={() => downloadFile(f.systemName, f.name)}
+                              className="file-btn"
+                              title={`Download ${f.name}`}
+                            >
+                              <FileText size={12} />
+                              <span>{f.name.length > 20 ? `${f.name.substring(0, 18)}...` : f.name}</span>
+                            </button>
+                          ))
+                        ) : (
+                          <span className="no-file-pill">Topic Submission</span>
+                        )}
                       </div>
                     </td>
                     <td className="td-action">
@@ -359,9 +400,15 @@ const AdminDashboard = ({ currentUser, onLogout, onBackToSite }) => {
             {deliverySuccess ? (
               <div className="delivery-success-view">
                 <CheckCircle2 size={54} className="success-icon" />
-                <h3>Chapter 4 &amp; 5 Report Delivered!</h3>
+                <h3>
+                  {selectedProject.serviceType === 'full_project'
+                    ? 'Full Project (Ch 1 - 5) Delivered!'
+                    : selectedProject.serviceType === 'proposal'
+                    ? 'Research Proposal Delivered!'
+                    : 'Chapter 4 & 5 Report Delivered!'}
+                </h3>
                 <p>
-                  The report has been saved to the database and is now downloadable on <strong>{selectedProject.studentName}</strong>'s dashboard.
+                  The deliverable files have been saved to the database and are now ready for download on <strong>{selectedProject.studentName}</strong>'s dashboard.
                 </p>
               </div>
             ) : (
@@ -370,6 +417,11 @@ const AdminDashboard = ({ currentUser, onLogout, onBackToSite }) => {
                 <div className="admin-modal-header">
                   <div className="project-headline">
                     <span className="proj-pill">{selectedProject.id}</span>
+                    <span className={`service-type-badge ${selectedProject.serviceType || 'full_project'}`}>
+                      {selectedProject.serviceType === 'chapter_4_5' ? 'Chapter 4 & 5 Only' :
+                       selectedProject.serviceType === 'proposal' ? 'Research Proposal' :
+                       'Full Project (Ch 1 - 5)'}
+                    </span>
                     <span className={`status-pill ${selectedProject.status}`}>
                       {selectedProject.status === 'completed' ? 'Delivered' : selectedProject.status}
                     </span>
@@ -386,31 +438,45 @@ const AdminDashboard = ({ currentUser, onLogout, onBackToSite }) => {
 
                 {errorMsg && <div className="auth-error-banner">{errorMsg}</div>}
 
-                {/* Step 1: Inspect Uploaded Chapter 1-3 Files */}
+                {/* Step 1: Inspect Uploaded Chapter 1-3 Files / Topic Outline */}
                 <div className="modal-block">
                   <h4 className="block-title">
                     <Download size={16} />
-                    <span>Student's Uploaded Chapters 1 to 3 &amp; Data:</span>
+                    <span>
+                      {selectedProject.serviceType === 'full_project'
+                        ? "Student's Project Topic & Reference Materials:"
+                        : selectedProject.serviceType === 'proposal'
+                        ? "Student's Proposal Topic & Guidelines:"
+                        : "Student's Uploaded Chapters 1 to 3 & Data:"}
+                    </span>
                   </h4>
                   <div className="modal-file-list">
-                    {selectedProject.chapter1to3Files?.map((f, i) => (
-                      <div key={i} className="inspect-file-item">
-                        <div className="file-desc">
-                          <FileText size={18} className="file-icon" />
-                          <div>
-                            <strong>{f.name}</strong>
-                            <span>Size: {f.size} • Uploaded: {f.uploadedAt}</span>
+                    {selectedProject.chapter1to3Files && selectedProject.chapter1to3Files.length > 0 ? (
+                      selectedProject.chapter1to3Files.map((f, i) => (
+                        <div key={i} className="inspect-file-item">
+                          <div className="file-desc">
+                            <FileText size={18} className="file-icon" />
+                            <div>
+                              <strong>{f.name}</strong>
+                              <span>Size: {f.size} • Uploaded: {f.uploadedAt}</span>
+                            </div>
                           </div>
+                          <button 
+                            onClick={() => downloadFile(f.systemName, f.name)}
+                            className="btn btn-outline btn-sm"
+                          >
+                            <Download size={14} />
+                            <span>Download File</span>
+                          </button>
                         </div>
-                        <button 
-                          onClick={() => downloadFile(f.systemName, f.name)}
-                          className="btn btn-outline btn-sm"
-                        >
-                          <Download size={14} />
-                          <span>Download File</span>
-                        </button>
+                      ))
+                    ) : (
+                      <div className="inspect-file-item" style={{ background: '#F8FAFC' }}>
+                        <span style={{ fontSize: '0.825rem', color: '#64748B' }}>
+                          Topic-only submission without file attachments.
+                        </span>
                       </div>
-                    ))}
+                    )}
                   </div>
 
                   {selectedProject.studentNotes && (
@@ -425,7 +491,7 @@ const AdminDashboard = ({ currentUser, onLogout, onBackToSite }) => {
                 <div className="modal-block">
                   <h4 className="block-title">
                     <Clock size={16} />
-                    <span>Update Analysis Progress:</span>
+                    <span>Update Work Progress:</span>
                   </h4>
                   <div className="status-toggle-row">
                     <button 
@@ -438,7 +504,9 @@ const AdminDashboard = ({ currentUser, onLogout, onBackToSite }) => {
                       onClick={() => handleStatusChange(selectedProject.id, 'in_progress')}
                       className={`status-btn ${selectedProject.status === 'in_progress' ? 'active-blue' : ''}`}
                     >
-                      In Progress (Analyzing Ch 4 &amp; 5)
+                      {selectedProject.serviceType === 'full_project' ? 'In Progress (Writing Ch 1 - 5)' :
+                       selectedProject.serviceType === 'proposal' ? 'In Progress (Drafting Proposal)' :
+                       'In Progress (Analyzing Ch 4 & 5)'}
                     </button>
                     <button 
                       onClick={() => handleStatusChange(selectedProject.id, 'completed')}
@@ -449,15 +517,27 @@ const AdminDashboard = ({ currentUser, onLogout, onBackToSite }) => {
                   </div>
                 </div>
 
-                {/* Step 3: Deliver Completed Chapter 4 & 5 Report */}
+                {/* Step 3: Deliver Completed Project / Report */}
                 <form onSubmit={handleDeliverReport} className="modal-block deliver-block">
                   <h4 className="block-title text-emerald">
                     <Upload size={16} />
-                    <span>Upload &amp; Deliver Completed Chapter 4 &amp; 5 Report:</span>
+                    <span>
+                      {selectedProject.serviceType === 'full_project'
+                        ? 'Upload & Deliver Completed Full Project (Chapters 1 to 5):'
+                        : selectedProject.serviceType === 'proposal'
+                        ? 'Upload & Deliver Completed Research Proposal:'
+                        : 'Upload & Deliver Completed Chapter 4 & 5 Report:'}
+                    </span>
                   </h4>
 
                   <div className="form-group mb-3">
-                    <label className="form-label">Attach Completed Chapter 4 &amp; 5 Document (.docx / .pdf)</label>
+                    <label className="form-label">
+                      {selectedProject.serviceType === 'full_project'
+                        ? 'Attach Completed Full Project Document (Chapters 1 to 5 .docx / .pdf)'
+                        : selectedProject.serviceType === 'proposal'
+                        ? 'Attach Completed Proposal Document (.docx / .pdf)'
+                        : 'Attach Completed Chapter 4 & 5 Document (.docx / .pdf)'}
+                    </label>
                     <input 
                       type="file" 
                       accept=".docx,.doc,.pdf" 
@@ -470,10 +550,16 @@ const AdminDashboard = ({ currentUser, onLogout, onBackToSite }) => {
                   </div>
 
                   <div className="form-group mb-3">
-                    <label className="form-label">Attach Analyzed Dataset / SPSS File (Optional)</label>
+                    <label className="form-label">
+                      {selectedProject.serviceType === 'full_project'
+                        ? 'Attach Empirical Data Analysis / Model Dataset (Optional)'
+                        : selectedProject.serviceType === 'proposal'
+                        ? 'Attach Research Instrument / Questionnaire (Optional)'
+                        : 'Attach Analyzed Dataset / SPSS Output File (Optional)'}
+                    </label>
                     <input 
                       type="file" 
-                      accept=".sav,.xlsx,.csv,.dta" 
+                      accept=".sav,.xlsx,.csv,.dta,.docx,.pdf" 
                       onChange={(e) => setDataFile(e.target.files[0])}
                       className="form-control"
                     />
@@ -500,11 +586,17 @@ const AdminDashboard = ({ currentUser, onLogout, onBackToSite }) => {
                       className="btn btn-primary w-100 deliver-btn"
                     >
                       {deliveryLoading ? (
-                        <span>Saving &amp; Delivering Report...</span>
+                        <span>Saving &amp; Delivering...</span>
                       ) : (
                         <>
                           <Send size={16} />
-                          <span>Send Completed Report Back to Student Dashboard</span>
+                          <span>
+                            {selectedProject.serviceType === 'full_project'
+                              ? 'Send Completed Full Project (Ch 1 - 5) to Student'
+                              : selectedProject.serviceType === 'proposal'
+                              ? 'Send Completed Proposal to Student'
+                              : 'Send Completed Chapter 4 & 5 Report to Student'}
+                          </span>
                         </>
                       )}
                     </button>

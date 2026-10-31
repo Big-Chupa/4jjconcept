@@ -9,69 +9,74 @@ import {
   Database, 
   LineChart, 
   ArrowUpRight,
-  UploadCloud
+  UploadCloud,
+  Sparkles
 } from 'lucide-react';
 import './Services.css';
 
 const Services = ({ onRequestService, onUploadClick }) => {
   const serviceList = [
     {
-      id: 'chapter-4-and-5',
+      id: 'full-project-writing',
       icon: <BookOpen className="service-icon" size={28} />,
-      title: 'Chapter 4 & 5 Thesis Execution & Delivery',
-      desc: 'Upload your Chapters 1 to 3. We run the statistical analysis, format full APA 7th tables, draft empirical discussions, and deliver Chapter 4 and Chapter 5 directly back to your dashboard.',
-      tags: ['Chapter 4 Analysis', 'Chapter 5 Discussion', 'APA 7th Format', 'Dashboard Delivery'],
-      popular: true
+      title: 'Full Project Writing (Chapters 1 to 5 from Scratch)',
+      desc: 'Simply provide your approved research topic. We handle the entire project from Chapter 1 (Introduction), Chapter 2 (Literature Review), Chapter 3 (Methodology), to Chapters 4 & 5 (Analysis & Recommendations), complete with preliminary pages, abstract, and references.',
+      tags: ['Primary Offering', 'Chapters 1 - 5', 'Turnitin Clean (<15%)', 'Free Corrections'],
+      popular: true,
+      highlightBadge: 'Flagship Service'
+    },
+    {
+      id: 'chapter-4-and-5',
+      icon: <BarChart3 className="service-icon" size={28} />,
+      title: 'Chapter 4 & 5 Empirical Data Analysis & Discussion',
+      desc: 'Already completed your Chapters 1 to 3? Upload your proposal and raw dataset. We run statistical tests, generate APA 7th tables, write empirical interpretations, and deliver completed Chapters 4 & 5 directly to your dashboard.',
+      tags: ['Chapter 4 Results', 'Chapter 5 Discussion', 'SPSS / R / Python', 'APA 7th Format'],
+      popular: true,
+      highlightBadge: 'Core Specialty'
+    },
+    {
+      id: 'proposal-development',
+      icon: <FileCheck2 className="service-icon" size={28} />,
+      title: 'Research Proposal & Synopsis Development',
+      desc: 'Need supervisor approval for your project topic? We write defense-ready proposals including background of study, statement of problem, research questions, formulated hypotheses, and rigorous methodology design.',
+      tags: ['Proposal Approval', 'Problem Statement', 'Conceptual Framework', 'Hypotheses'],
+      popular: true,
+      highlightBadge: 'Topic Approval'
     },
     {
       id: 'data-analysis',
-      icon: <BarChart3 className="service-icon" size={28} />,
-      title: 'Statistical Data Analysis (SPSS / R / Python / STATA)',
-      desc: 'Expert execution across SPSS, R, Python, STATA, and Advanced Excel. We run descriptive statistics, multiple regressions, ANOVA, t-tests, SEM, and correlation matrices.',
-      tags: ['SPSS v29', 'R-Studio', 'Python', 'STATA', 'Hypothesis Testing'],
-      popular: true
-    },
-    {
-      id: 'proposal-review',
-      icon: <FileCheck2 className="service-icon" size={28} />,
-      title: 'Chapters 1 to 3 Proposal Review & Alignment',
-      desc: 'Evaluation of problem statements, conceptual frameworks, objective-hypothesis consistency, and sampling methodology to ensure 100% defense alignment.',
-      tags: ['Problem Statement', 'Conceptual Framework', 'Sample Size Formulas']
+      icon: <LineChart className="service-icon" size={28} />,
+      title: 'Statistical Modeling (SPSS / R / Python / STATA)',
+      desc: 'Advanced statistical analytics across SPSS, R-Studio, Python, STATA, and Advanced Excel: multiple regressions, ANOVA, structural equation modeling (SEM), t-tests, and correlation matrices.',
+      tags: ['SPSS v29', 'R-Studio', 'Python Data Science', 'STATA', 'Hypothesis Testing']
     },
     {
       id: 'questionnaire-design',
       icon: <HelpCircle className="service-icon" size={28} />,
       title: 'Questionnaire Design & Reliability Scale Testing',
-      desc: 'Structured Likert-scale survey drafting, expert content validity, data coding into SPSS/Excel, and Cronbach\'s Alpha reliability scoring (α ≥ 0.70).',
+      desc: 'Structured Likert-scale questionnaire drafting, expert content validity, data coding into SPSS/Excel, and Cronbach\'s Alpha reliability verification (α ≥ 0.70).',
       tags: ['Google Forms', 'KoboToolbox', 'Cronbach Alpha', 'SPSS Coding']
     },
     {
       id: 'plagiarism-reduction',
       icon: <Layers className="service-icon" size={28} />,
       title: 'Plagiarism Reduction & Turnitin Clearance',
-      desc: 'Rigorous academic rewriting to eliminate unoriginal phrasing, improve academic tone, and drive Turnitin similarity scores well below institutional thresholds (<15%).',
+      desc: 'Rigorous scholarly rewriting to eliminate unoriginal phrasing, upgrade vocabulary, and bring Turnitin similarity scores well below strict institutional thresholds (<15%).',
       tags: ['Turnitin Report', 'APA 7th Citations', 'Manual Paraphrasing']
     },
     {
       id: 'defense-prep',
       icon: <Presentation className="service-icon" size={28} />,
-      title: 'Oral Defense Coaching & Presentation Slides',
-      desc: 'Professional presentation slides with visual charts, bulleted findings, and personalized 1-on-1 coaching on answering tough supervisor defense questions.',
+      title: 'Oral Defense Coaching & PowerPoint Slides',
+      desc: 'High-impact PowerPoint presentation decks with empirical charts, defense talking points, and 1-on-1 coaching on answering difficult panel questions.',
       tags: ['PowerPoint Deck', 'Mock Defense', 'Q&A Coaching']
     },
     {
       id: 'datasets',
       icon: <Database className="service-icon" size={28} />,
-      title: 'Curated Research Datasets',
-      desc: 'High-quality secondary data sourcing and cleaning across Nigerian economic indicators (CBN/NBS), corporate financial reports, healthcare, and education.',
-      tags: ['CBN Bulletins', 'World Bank', 'Financial Statements']
-    },
-    {
-      id: 'business-analytics',
-      icon: <LineChart className="service-icon" size={28} />,
-      title: 'Corporate Business Intelligence & Dashboards',
-      desc: 'Interactive Power BI and Excel dashboards for corporate clients, business forecasting, customer retention metrics, and sales trend analysis.',
-      tags: ['Power BI', 'Interactive Dashboards', 'Forecasting']
+      title: 'Curated Nigerian & Global Research Datasets',
+      desc: 'High-quality secondary data sourcing and cleaning across Central Bank of Nigeria (CBN) bulletins, NBS macroeconomic data, corporate financial statements, and World Bank indices.',
+      tags: ['CBN Bulletins', 'World Bank', 'Corporate Financials']
     }
   ];
 
@@ -80,13 +85,13 @@ const Services = ({ onRequestService, onUploadClick }) => {
       <div className="container">
         <div className="section-header">
           <div className="section-tag">
-            <span>Specialized Capabilities</span>
+            <span>Our Service Portfolio</span>
           </div>
           <h2 className="section-title">
-            Comprehensive Services Tailored for <span className="gradient-text">Academic &amp; Data Excellence</span>
+            Tailored Research Solutions for <span className="gradient-text">Undergraduate &amp; Postgraduate Success</span>
           </h2>
           <p className="section-subtitle">
-            Whether you need complete Chapter 4 &amp; 5 execution or specific statistical modeling, 4JJCONCEPT provides end-to-end expertise.
+            Whether you need a full project written from scratch, Chapter 4 &amp; 5 data analysis for your existing proposal, or a defense-ready proposal for your approved topic.
           </p>
         </div>
 
@@ -97,7 +102,7 @@ const Services = ({ onRequestService, onUploadClick }) => {
               className={`service-card ${service.popular ? 'featured' : ''}`}
             >
               {service.popular && (
-                <div className="popular-badge">Core Specialty</div>
+                <div className="popular-badge">{service.highlightBadge || 'Core Specialty'}</div>
               )}
               
               <div className="service-header">

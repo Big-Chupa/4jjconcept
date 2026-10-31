@@ -19,18 +19,18 @@ const WhyUs = ({ onUploadClick }) => {
     },
     {
       icon: <UploadCloud size={26} />,
-      title: 'Direct Portal Submission & File Delivery',
-      desc: 'Upload your Chapters 1 to 3 through your personal dashboard. Receive Chapter 4 & 5 reports and raw SPSS datasets directly into your student portal.'
+      title: 'Direct Portal Submission & Rapid Delivery',
+      desc: 'Upload just your topic for full project writing, or submit your Chapters 1 to 3 for Chapter 4 & 5 empirical analysis. Receive completed documents directly into your student portal.'
     },
     {
       icon: <UserCheck size={26} />,
       title: '1-on-1 Defense Coaching & Explanations',
-      desc: 'We prepare you for oral defense panel questioning. You will understand your F-values, p-values, R², and theoretical implications like an expert.'
+      desc: 'We prepare you for oral defense panel questioning. You will understand your hypotheses, models, findings, and theoretical implications like an expert.'
     },
     {
       icon: <ShieldCheck size={26} />,
       title: 'Strict Non-Disclosure & Confidentiality',
-      desc: 'Your raw survey data, unpublished hypotheses, and thesis manuscripts are strictly guarded under full confidentiality protocols.'
+      desc: 'Your research topic, unpublished hypotheses, survey datasets, and thesis manuscripts are strictly guarded under full confidentiality protocols.'
     },
     {
       icon: <FileCheck size={26} />,
@@ -40,7 +40,7 @@ const WhyUs = ({ onUploadClick }) => {
     {
       icon: <MessageCircle size={26} />,
       title: 'Direct WhatsApp Line (08037696091)',
-      desc: 'No confusing ticket systems. Communicate directly via WhatsApp with the senior statistician handling your project.'
+      desc: 'No confusing ticket systems. Communicate directly via WhatsApp with the lead research consultant handling your project.'
     }
   ];
 
@@ -57,7 +57,7 @@ const WhyUs = ({ onUploadClick }) => {
               Why Hundreds of Scholars <span className="gradient-text">Trust 4JJCONCEPT</span>
             </h2>
             <p className="why-us-desc">
-              Academic research is stressful enough without having to decipher confusing statistical tables or deal with uncooperative analysts. We take you from your initial Chapter 1–3 proposal to an approved Chapter 4 &amp; 5 defense.
+              Academic research is stressful enough without having to write from scratch or decipher confusing statistics. Whether you need a full project (Chapters 1 to 5), precision Chapter 4 &amp; 5 data analysis, or a defense-ready proposal, we guide you to approval.
             </p>
 
             <div className="why-us-stat-box">
@@ -72,7 +72,7 @@ const WhyUs = ({ onUploadClick }) => {
               className="btn btn-primary why-us-btn"
             >
               <UploadCloud size={17} />
-              <span>Upload Chapters 1 to 3</span>
+              <span>Submit Your Topic / Project Now</span>
             </button>
           </div>
 

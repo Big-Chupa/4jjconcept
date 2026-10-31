@@ -251,19 +251,29 @@ router.get('/projects', (req, res) => {
   }
 });
 
-// Student Uploads Chapters 1 to 3
+// Student Submits Project (Full Project, Chapter 4 & 5, or Proposal)
 router.post(
   '/projects/upload',
   upload.fields([
     { name: 'chapter1to3', maxCount: 1 },
-    { name: 'dataset', maxCount: 1 }
+    { name: 'dataset', maxCount: 1 },
+    { name: 'guidelineFile', maxCount: 1 }
   ]),
   (req, res) => {
     try {
-      const { userId, title, degreeLevel, department, institution, preferredTool, studentNotes } = req.body;
+      const { 
+        userId, 
+        title, 
+        serviceType = 'full_project', 
+        degreeLevel, 
+        department, 
+        institution, 
+        preferredTool, 
+        studentNotes 
+      } = req.body;
 
       if (!userId || !title) {
-        return res.status(400).json({ error: 'User ID and project title are required.' });
+        return res.status(400).json({ error: 'User ID and research topic are required.' });
       }
 
       const db = readDB();
@@ -274,22 +284,29 @@ router.post(
 
       const files = [];
 
-      // Process uploaded Chapter 1 - 3 file
-      if (req.files && req.files['chapter1to3'] && req.files['chapter1to3'][0]) {
-        const f = req.files['chapter1to3'][0];
+      // Process uploaded primary file (Chapter 1-3 document or guidelines)
+      const primaryUpload = (req.files && (req.files['chapter1to3']?.[0] || req.files['guidelineFile']?.[0]));
+      if (primaryUpload) {
         files.push({
           id: `f_${Date.now()}_1`,
-          name: f.originalname,
-          systemName: f.filename,
-          size: `${(f.size / (1024 * 1024)).toFixed(2)} MB`,
+          name: primaryUpload.originalname,
+          systemName: primaryUpload.filename,
+          size: `${(primaryUpload.size / (1024 * 1024)).toFixed(2)} MB`,
           uploadedAt: new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })
         });
       } else {
+        // Topic-only submissions or draft briefs
+        const fileLabel = serviceType === 'full_project'
+          ? `${user.name.replace(/\s+/g, '_')}_Full_Project_Topic_Brief.docx`
+          : serviceType === 'proposal'
+          ? `${user.name.replace(/\s+/g, '_')}_Proposal_Outline.docx`
+          : `${user.name.replace(/\s+/g, '_')}_Chapters_1_to_3.docx`;
+
         files.push({
           id: `f_${Date.now()}_default`,
-          name: `${user.name.replace(/\s+/g, '_')}_Chapters_1_to_3.docx`,
+          name: fileLabel,
           systemName: null,
-          size: '1.8 MB',
+          size: 'Topic Outline',
           uploadedAt: new Date().toLocaleDateString('en-US')
         });
       }
@@ -313,6 +330,12 @@ router.post(
         studentEmail: user.email,
         studentPhone: user.phone || '08037696091',
         title: title.trim(),
+        serviceType: serviceType || 'full_project', // 'full_project' | 'chapter_4_5' | 'proposal'
+        category: serviceType === 'full_project' 
+          ? 'Full Project (Ch 1 - 5)' 
+          : serviceType === 'proposal' 
+          ? 'Research Proposal' 
+          : 'Chapter 4 & 5 Only',
         degreeLevel: degreeLevel || 'B.Sc / HND',
         department: department || user.department,
         institution: institution || user.institution,
@@ -333,10 +356,16 @@ router.post(
       db.projects.unshift(newProject);
       writeDB(db);
 
-      res.status(201).json({ project: newProject, message: 'Chapters 1 to 3 uploaded successfully.' });
+      const successMsg = serviceType === 'full_project'
+        ? 'Research topic submitted for Full Project Writing (Chapters 1 to 5)!'
+        : serviceType === 'proposal'
+        ? 'Research proposal request submitted successfully!'
+        : 'Chapters 1 to 3 uploaded successfully for data analysis!';
+
+      res.status(201).json({ project: newProject, message: successMsg });
     } catch (err) {
       console.error('Upload error:', err);
-      res.status(500).json({ error: 'Server error processing file upload.' });
+      res.status(500).json({ error: 'Server error processing project submission.' });
     }
   }
 );

@@ -11,7 +11,11 @@ import {
   ArrowLeft,
   X,
   FileSpreadsheet,
-  AlertCircle
+  AlertCircle,
+  BookOpen,
+  BarChart3,
+  FileCheck2,
+  Sparkles
 } from 'lucide-react';
 import { api } from '../../services/api';
 import './StudentDashboard.css';
@@ -27,6 +31,7 @@ const StudentDashboard = ({ currentUser, onLogout, onBackToSite }) => {
 
   const [newProject, setNewProject] = useState({
     title: '',
+    serviceType: 'full_project', // 'full_project' | 'chapter_4_5' | 'proposal'
     degreeLevel: 'B.Sc / HND',
     department: currentUser?.department || 'Economics',
     institution: currentUser?.institution || 'Nigerian University',
@@ -73,6 +78,7 @@ const StudentDashboard = ({ currentUser, onLogout, onBackToSite }) => {
       const formData = new FormData();
       formData.append('userId', currentUser.id);
       formData.append('title', newProject.title);
+      formData.append('serviceType', newProject.serviceType);
       formData.append('degreeLevel', newProject.degreeLevel);
       formData.append('department', newProject.department);
       formData.append('institution', newProject.institution);
@@ -97,6 +103,7 @@ const StudentDashboard = ({ currentUser, onLogout, onBackToSite }) => {
         setIsUploadModalOpen(false);
         setNewProject({
           title: '',
+          serviceType: 'full_project',
           degreeLevel: 'B.Sc / HND',
           department: currentUser?.department || 'Economics',
           institution: currentUser?.institution || 'Nigerian University',
@@ -108,13 +115,25 @@ const StudentDashboard = ({ currentUser, onLogout, onBackToSite }) => {
       }, 1500);
     } catch (err) {
       setUploadLoading(false);
-      setErrorMsg(err.message || 'Error uploading project.');
+      setErrorMsg(err.message || 'Error submitting project.');
     }
   };
 
   const downloadDeliverable = (systemName, fileName) => {
     const url = api.getFileDownloadUrl(systemName, fileName);
     window.open(url, '_blank');
+  };
+
+  const getServiceBadgeText = (serviceType) => {
+    switch (serviceType) {
+      case 'full_project':
+        return 'Full Project (Ch 1 - 5)';
+      case 'proposal':
+        return 'Research Proposal';
+      case 'chapter_4_5':
+      default:
+        return 'Chapter 4 & 5 Only';
+    }
   };
 
   return (
@@ -161,12 +180,12 @@ const StudentDashboard = ({ currentUser, onLogout, onBackToSite }) => {
 
       {/* Main Student Workspace */}
       <main className="container portal-content">
-        {/* Banner with Upload Trigger */}
+        {/* Banner with Submission Trigger */}
         <div className="portal-welcome-banner">
           <div className="welcome-text">
             <h2>Welcome, {currentUser?.name?.split(' ')[0] || 'Researcher'}! 👋</h2>
             <p>
-              Upload your <strong>Chapters 1 to 3</strong> and raw survey data below. Our analytical team works on your <strong>Chapter 4 (Data Analysis)</strong> and <strong>Chapter 5 (Discussion &amp; Recommendations)</strong>, and sends the complete report back to your dashboard.
+              Submit your approved <strong>project topic</strong> and we will write your <strong>complete project from Chapters 1 through 5</strong> from scratch. Already wrote your proposal? Submit your <strong>Chapters 1 to 3</strong> for precision <strong>Chapter 4 &amp; 5 data analysis</strong>, or request a <strong>research proposal</strong>.
             </p>
           </div>
           <button 
@@ -174,7 +193,7 @@ const StudentDashboard = ({ currentUser, onLogout, onBackToSite }) => {
             className="btn btn-primary btn-upload-cta"
           >
             <Plus size={18} />
-            <span>Upload Chapters 1 - 3</span>
+            <span>Submit Research Project</span>
           </button>
         </div>
 
@@ -182,7 +201,7 @@ const StudentDashboard = ({ currentUser, onLogout, onBackToSite }) => {
         <div className="portal-metrics-row">
           <div className="portal-metric-card">
             <div className="metric-icon-box blue">
-              <FileText size={22} />
+              <BookOpen size={22} />
             </div>
             <div>
               <span className="metric-count">{projects.length}</span>
@@ -198,7 +217,7 @@ const StudentDashboard = ({ currentUser, onLogout, onBackToSite }) => {
               <span className="metric-count">
                 {projects.filter(p => p.status === 'in_progress' || p.status === 'pending').length}
               </span>
-              <span className="metric-title">In Progress (Ch 4 &amp; 5)</span>
+              <span className="metric-title">In Progress (Writing &amp; Analysis)</span>
             </div>
           </div>
 
@@ -210,7 +229,7 @@ const StudentDashboard = ({ currentUser, onLogout, onBackToSite }) => {
               <span className="metric-count">
                 {projects.filter(p => p.status === 'completed').length}
               </span>
-              <span className="metric-title">Completed Reports</span>
+              <span className="metric-title">Completed Theses Delivered</span>
             </div>
           </div>
         </div>
@@ -219,31 +238,31 @@ const StudentDashboard = ({ currentUser, onLogout, onBackToSite }) => {
         <div className="portal-projects-section">
           <div className="section-title-row">
             <div>
-              <h3>My Research Projects</h3>
-              <p>Track progress, view supervisor revisions, and download Chapter 4 &amp; 5 reports.</p>
+              <h3>My Research Projects &amp; Theses</h3>
+              <p>Track progress, view supervisor revisions, and download your completed project files.</p>
             </div>
             <button 
               onClick={() => setIsUploadModalOpen(true)}
               className="btn btn-outline btn-sm"
             >
-              <UploadCloud size={15} />
-              <span>Submit Another Project</span>
+              <Plus size={15} />
+              <span>Submit Another Topic / Project</span>
             </button>
           </div>
 
           {projects.length === 0 ? (
             <div className="empty-projects-state">
               <div className="empty-icon-wrap">
-                <UploadCloud size={48} />
+                <BookOpen size={48} />
               </div>
-              <h4>No Research Projects Uploaded Yet</h4>
-              <p>Ready to analyze your data? Upload your Chapters 1 to 3 to get started immediately.</p>
+              <h4>No Research Projects Submitted Yet</h4>
+              <p>Ready to get your thesis done? Submit your approved project topic for Full Project Writing, Chapter 4 &amp; 5 analysis, or a proposal.</p>
               <button 
                 onClick={() => setIsUploadModalOpen(true)}
                 className="btn btn-primary mt-3"
               >
                 <Plus size={16} />
-                <span>Upload Chapters 1 - 3 Now</span>
+                <span>Submit Research Topic Now</span>
               </button>
             </div>
           ) : (
@@ -254,8 +273,11 @@ const StudentDashboard = ({ currentUser, onLogout, onBackToSite }) => {
                     <div>
                       <div className="project-meta-pill-row">
                         <span className="proj-id-badge">{proj.id}</span>
+                        <span className={`service-type-badge ${proj.serviceType || 'full_project'}`}>
+                          {getServiceBadgeText(proj.serviceType)}
+                        </span>
                         <span className="proj-degree-badge">{proj.degreeLevel}</span>
-                        <span className="proj-tool-badge">Tool: {proj.preferredTool}</span>
+                        <span className="proj-tool-badge">{proj.preferredTool}</span>
                       </div>
                       <h4 className="project-title">{proj.title}</h4>
                       <div className="project-sub-info">
@@ -275,7 +297,13 @@ const StudentDashboard = ({ currentUser, onLogout, onBackToSite }) => {
                       {proj.status === 'in_progress' && (
                         <div className="status-badge progress">
                           <Clock size={14} className="spin-slow" />
-                          <span>Analyzing Ch 4 &amp; 5</span>
+                          <span>
+                            {proj.serviceType === 'full_project' 
+                              ? 'Writing Full Project (Ch 1 - 5)' 
+                              : proj.serviceType === 'proposal' 
+                              ? 'Drafting Proposal' 
+                              : 'Analyzing Ch 4 & 5'}
+                          </span>
                         </div>
                       )}
                       {proj.status === 'completed' && (
@@ -287,9 +315,15 @@ const StudentDashboard = ({ currentUser, onLogout, onBackToSite }) => {
                     </div>
                   </div>
 
-                  {/* Uploaded Files Section */}
+                  {/* Submission Details / Files */}
                   <div className="project-section-block">
-                    <span className="block-label">Uploaded Chapters 1 to 3 &amp; Data:</span>
+                    <span className="block-label">
+                      {proj.serviceType === 'full_project'
+                        ? 'Project Topic Submission & Materials:'
+                        : proj.serviceType === 'proposal'
+                        ? 'Proposal Submission & Guidelines:'
+                        : 'Uploaded Chapters 1 to 3 & Data:'}
+                    </span>
                     <div className="file-pills-wrap">
                       {proj.chapter1to3Files && proj.chapter1to3Files.map((f, i) => (
                         <div key={i} className="file-pill">
@@ -308,7 +342,13 @@ const StudentDashboard = ({ currentUser, onLogout, onBackToSite }) => {
                         <div className="d-title-wrap">
                           <CheckCircle2 size={22} className="d-icon" />
                           <div>
-                            <h5>Completed Chapter 4 &amp; 5 Report Available!</h5>
+                            <h5>
+                              {proj.serviceType === 'full_project'
+                                ? 'Completed Full Project (Chapters 1 to 5) Available!'
+                                : proj.serviceType === 'proposal'
+                                ? 'Completed Research Proposal Document Ready!'
+                                : 'Completed Chapter 4 & 5 Report Available!'}
+                            </h5>
                             <span className="d-sub">Delivered by 4JJCONCEPT on {proj.deliverables.completedReportFile?.deliveredAt}</span>
                           </div>
                         </div>
@@ -332,7 +372,13 @@ const StudentDashboard = ({ currentUser, onLogout, onBackToSite }) => {
                               className="btn btn-primary btn-download"
                             >
                               <Download size={16} />
-                              <span>Download Chapter 4 &amp; 5 Report ({proj.deliverables.completedReportFile.size})</span>
+                              <span>
+                                {proj.serviceType === 'full_project'
+                                  ? `Download Full Project (Chapters 1 - 5) [${proj.deliverables.completedReportFile.size}]`
+                                  : proj.serviceType === 'proposal'
+                                  ? `Download Proposal Document [${proj.deliverables.completedReportFile.size}]`
+                                  : `Download Chapter 4 & 5 Report [${proj.deliverables.completedReportFile.size}]`}
+                              </span>
                             </button>
                           )}
 
@@ -350,7 +396,7 @@ const StudentDashboard = ({ currentUser, onLogout, onBackToSite }) => {
                           )}
 
                           <a 
-                            href={`https://wa.me/2348037696091?text=Hello%204JJCONCEPT%2C%20I%20have%20downloaded%20my%20Chapter%204%20and%205%20report%20for%20Project%20${proj.id}.`}
+                            href={`https://wa.me/2348037696091?text=Hello%204JJCONCEPT%2C%20I%20have%20downloaded%20my%20deliverable%20for%20Project%20${proj.id}.`}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="btn btn-whatsapp btn-download"
@@ -368,7 +414,12 @@ const StudentDashboard = ({ currentUser, onLogout, onBackToSite }) => {
                     <div className="in-progress-notice">
                       <Clock size={16} className="notice-icon" />
                       <span>
-                        Our statistical analysts are currently processing your hypotheses. You will see your completed Chapter 4 &amp; 5 report right here once ready. Urgent questions? WhatsApp: <strong>08037696091</strong>.
+                        {proj.serviceType === 'full_project'
+                          ? 'Our academic research team is currently developing your full thesis (Chapters 1 to 5). Your complete document will be delivered right here upon completion.'
+                          : proj.serviceType === 'proposal'
+                          ? 'Our methodology desk is drafting your defense-ready research proposal. It will appear here once ready.'
+                          : 'Our statistical analysts are executing your empirical tests. Your Chapter 4 & 5 report will be delivered here.'}
+                        {' '}Questions or corrections? WhatsApp: <strong>08037696091</strong>.
                       </span>
                     </div>
                   )}
@@ -379,7 +430,7 @@ const StudentDashboard = ({ currentUser, onLogout, onBackToSite }) => {
         </div>
       </main>
 
-      {/* Upload Chapter 1 - 3 Modal */}
+      {/* Project Submission Modal */}
       {isUploadModalOpen && (
         <div className="modal-overlay" onClick={() => setIsUploadModalOpen(false)}>
           <div className="modal-container upload-modal" onClick={(e) => e.stopPropagation()}>
@@ -393,18 +444,18 @@ const StudentDashboard = ({ currentUser, onLogout, onBackToSite }) => {
             {uploadSuccess ? (
               <div className="upload-success-state">
                 <CheckCircle2 size={54} className="success-icon" />
-                <h3>Chapters 1 to 3 Uploaded Successfully!</h3>
+                <h3>Project Submitted Successfully!</h3>
                 <p>
-                  Your project has been recorded in the database. The 4JJCONCEPT admin will review your methodology and execute Chapter 4 &amp; 5.
+                  Your research project has been recorded in the database. The 4JJCONCEPT team will review your topic and begin execution immediately.
                 </p>
               </div>
             ) : (
               <form onSubmit={handleProjectSubmit} className="upload-form">
                 <div className="upload-header">
                   <span className="upload-badge">Research Submission</span>
-                  <h3>Upload Chapters 1 to 3</h3>
+                  <h3>Submit Research Project</h3>
                   <p>
-                    Provide your research topic and attach your proposal/draft. We will execute and deliver Chapter 4 &amp; Chapter 5.
+                    Select the service you need: Full Project Writing (Chapters 1-5), Chapter 4 &amp; 5 data analysis, or a Research Proposal.
                   </p>
                 </div>
 
@@ -412,14 +463,63 @@ const StudentDashboard = ({ currentUser, onLogout, onBackToSite }) => {
                   <div className="auth-error-banner">{errorMsg}</div>
                 )}
 
+                {/* 1. Service Type Selector */}
+                <div className="service-selector-group mb-3">
+                  <label className="form-label">Select Required Service *</label>
+                  <div className="service-options-grid">
+                    <div 
+                      className={`service-option-card ${newProject.serviceType === 'full_project' ? 'selected' : ''}`}
+                      onClick={() => setNewProject({ ...newProject, serviceType: 'full_project' })}
+                    >
+                      <div className="opt-header">
+                        <BookOpen size={18} className="opt-icon" />
+                        <span className="opt-tag">Major Focus</span>
+                      </div>
+                      <strong>1. Full Project Writing (Ch 1 - 5)</strong>
+                      <p>Enter your approved topic. Complete thesis written from scratch (Preliminaries to Ch 5). Files optional!</p>
+                    </div>
+
+                    <div 
+                      className={`service-option-card ${newProject.serviceType === 'chapter_4_5' ? 'selected' : ''}`}
+                      onClick={() => setNewProject({ ...newProject, serviceType: 'chapter_4_5' })}
+                    >
+                      <div className="opt-header">
+                        <BarChart3 size={18} className="opt-icon" />
+                        <span className="opt-tag alt">Analysis</span>
+                      </div>
+                      <strong>2. Chapter 4 &amp; 5 Only</strong>
+                      <p>For students with Chapters 1 to 3 written. Upload your proposal draft &amp; survey/secondary data.</p>
+                    </div>
+
+                    <div 
+                      className={`service-option-card ${newProject.serviceType === 'proposal' ? 'selected' : ''}`}
+                      onClick={() => setNewProject({ ...newProject, serviceType: 'proposal' })}
+                    >
+                      <div className="opt-header">
+                        <FileCheck2 size={18} className="opt-icon" />
+                        <span className="opt-tag alt">Proposal</span>
+                      </div>
+                      <strong>3. Research Proposal Writing</strong>
+                      <p>Defense-ready proposal drafted for topic approval (Background, problem statement, methodology).</p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* 2. Research Topic */}
                 <div className="form-group mb-3">
-                  <label className="form-label">Approved Research Topic *</label>
+                  <label className="form-label">
+                    {newProject.serviceType === 'full_project' 
+                      ? 'Approved Research Project Topic *' 
+                      : newProject.serviceType === 'proposal' 
+                      ? 'Proposed Research Topic *' 
+                      : 'Research Topic (For Chapter 4 & 5) *'}
+                  </label>
                   <textarea
                     rows="2"
                     required
                     value={newProject.title}
                     onChange={(e) => setNewProject({ ...newProject, title: e.target.value })}
-                    placeholder="e.g. Assessment of Corporate Governance on Financial Performance of Quoted Firms in Nigeria"
+                    placeholder="e.g. Impact of Artificial Intelligence Adoption on SME Operational Performance in Lagos State"
                     className="form-control"
                   ></textarea>
                 </div>
@@ -457,9 +557,15 @@ const StudentDashboard = ({ currentUser, onLogout, onBackToSite }) => {
                   </div>
                 </div>
 
-                {/* File Upload Zone 1: Chapters 1 to 3 */}
+                {/* File Upload Zone 1: Document */}
                 <div className="form-group mb-3">
-                  <label className="form-label">Attach Chapter 1 to 3 Document (Word / PDF) *</label>
+                  <label className="form-label">
+                    {newProject.serviceType === 'full_project'
+                      ? 'Attach Project Guidelines, Reference Materials or Lecturer Notes (Optional)'
+                      : newProject.serviceType === 'proposal'
+                      ? 'Attach Departmental Proposal Guidelines (Optional)'
+                      : 'Attach Chapter 1 to 3 Document (Word / PDF) *'}
+                  </label>
                   <div className="file-drop-zone">
                     <input 
                       type="file" 
@@ -477,8 +583,14 @@ const StudentDashboard = ({ currentUser, onLogout, onBackToSite }) => {
                         </div>
                       ) : (
                         <div>
-                          <strong>Click to select Chapter 1 - 3 Document</strong>
-                          <span>Supports .docx, .doc, or .pdf</span>
+                          <strong>
+                            {newProject.serviceType === 'full_project'
+                              ? 'Click to attach guidelines or reference material (Optional)'
+                              : newProject.serviceType === 'proposal'
+                              ? 'Click to attach proposal guidelines (Optional)'
+                              : 'Click to select Chapter 1 - 3 Document'}
+                          </strong>
+                          <span>Supports .docx, .doc, or .pdf (You can submit with topic only!)</span>
                         </div>
                       )}
                     </label>
@@ -486,39 +598,41 @@ const StudentDashboard = ({ currentUser, onLogout, onBackToSite }) => {
                 </div>
 
                 {/* File Upload Zone 2: Optional Raw Data */}
-                <div className="form-group mb-3">
-                  <label className="form-label">Attach Questionnaire Responses / Raw Data (Optional)</label>
-                  <div className="file-drop-zone secondary">
-                    <input 
-                      type="file" 
-                      id="dataFileInput" 
-                      accept=".xlsx,.xls,.csv,.sav,.dta" 
-                      onChange={(e) => handleFileChange(e, 'data')}
-                      className="file-hidden-input" 
-                    />
-                    <label htmlFor="dataFileInput" className="file-drop-label">
-                      <FileSpreadsheet size={24} className="drop-icon text-muted" />
-                      {selectedDataFile ? (
-                        <div className="selected-file-info">
-                          <strong>{selectedDataFile.name}</strong>
-                          <span>({(selectedDataFile.size / (1024 * 1024)).toFixed(2)} MB)</span>
-                        </div>
-                      ) : (
-                        <div>
-                          <span>Click to attach raw survey dataset (.xlsx, .csv, .sav) if available</span>
-                        </div>
-                      )}
-                    </label>
+                {newProject.serviceType !== 'proposal' && (
+                  <div className="form-group mb-3">
+                    <label className="form-label">Attach Survey Questionnaire Responses / Raw Data (Optional)</label>
+                    <div className="file-drop-zone secondary">
+                      <input 
+                        type="file" 
+                        id="dataFileInput" 
+                        accept=".xlsx,.xls,.csv,.sav,.dta" 
+                        onChange={(e) => handleFileChange(e, 'data')}
+                        className="file-hidden-input" 
+                      />
+                      <label htmlFor="dataFileInput" className="file-drop-label">
+                        <FileSpreadsheet size={24} className="drop-icon text-muted" />
+                        {selectedDataFile ? (
+                          <div className="selected-file-info">
+                            <strong>{selectedDataFile.name}</strong>
+                            <span>({(selectedDataFile.size / (1024 * 1024)).toFixed(2)} MB)</span>
+                          </div>
+                        ) : (
+                          <div>
+                            <span>Click to attach raw survey dataset (.xlsx, .csv, .sav) if available</span>
+                          </div>
+                        )}
+                      </label>
+                    </div>
                   </div>
-                </div>
+                )}
 
                 <div className="form-group mb-4">
-                  <label className="form-label">Supervisor Guidelines / Special Instructions (Optional)</label>
+                  <label className="form-label">Supervisor Guidelines / Case Study / Specific Instructions (Optional)</label>
                   <textarea
                     rows="2"
                     value={newProject.studentNotes}
                     onChange={(e) => setNewProject({ ...newProject, studentNotes: e.target.value })}
-                    placeholder="e.g. Supervisor requested multiple regression with VIF collinearity diagnostics..."
+                    placeholder="e.g. Target case study is First Bank Plc, utilize secondary panel data from 2015 to 2024..."
                     className="form-control"
                   ></textarea>
                 </div>
@@ -529,11 +643,17 @@ const StudentDashboard = ({ currentUser, onLogout, onBackToSite }) => {
                   className="btn btn-primary w-100 upload-submit-btn"
                 >
                   {uploadLoading ? (
-                    <span>Uploading to Database...</span>
+                    <span>Submitting to Database...</span>
                   ) : (
                     <>
                       <UploadCloud size={18} />
-                      <span>Submit Chapters 1 to 3 for Analysis</span>
+                      <span>
+                        {newProject.serviceType === 'full_project'
+                          ? 'Submit Topic for Full Project Writing (Chapters 1 to 5)'
+                          : newProject.serviceType === 'proposal'
+                          ? 'Submit Topic for Proposal Writing'
+                          : 'Submit Chapters 1 to 3 for Data Analysis'}
+                      </span>
                     </>
                   )}
                 </button>

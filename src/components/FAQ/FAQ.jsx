@@ -7,27 +7,27 @@ const FAQ = () => {
 
   const faqs = [
     {
-      q: 'How does the Chapter 1 to 5 process work on 4JJCONCEPT?',
-      a: 'It is a simple 3-step process: (1) You create a free student account and upload your Chapters 1 to 3 draft (Methodology & Literature review) along with any survey data. (2) The 4JJCONCEPT statistical admin reviews your objectives and carries out the empirical analysis for Chapter 4 and Chapter 5. (3) The completed Chapter 4 and Chapter 5 reports and raw SPSS datasets are sent directly back to your student dashboard for instant download!'
+      q: 'Can I submit just my project topic without any written chapters?',
+      a: 'Yes, absolutely! That is our primary specialty. You can submit just your approved research project topic, and our senior academic writers will draft your complete project from Chapter 1 (Introduction), Chapter 2 (Literature Review), Chapter 3 (Methodology), to Chapters 4 & 5 (Analysis & Recommendations), complete with preliminary pages, abstract, references, and appendices.'
+    },
+    {
+      q: 'What if I already have my Chapters 1 to 3 written?',
+      a: 'If you already have your proposal or Chapters 1 to 3 written, you can choose our Chapter 4 & 5 service! Simply upload your draft and raw data (or let us source the data for you). We run the statistical analysis, format full APA 7th tables, draft empirical discussions, and deliver Chapter 4 and Chapter 5 directly back to your student dashboard.'
+    },
+    {
+      q: 'Can 4JJCONCEPT write my research proposal for topic approval?',
+      a: 'Yes! We craft defense-ready research proposals and synopsis for proposed topics. This covers the background of the study, statement of problem, objectives, research questions, hypotheses, conceptual framework, and proposed methodology to ensure quick supervisor sign-off.'
     },
     {
       q: 'Does academic research work stop at Chapter 5?',
-      a: 'Yes! Standard Nigerian and Commonwealth university dissertations (ND, B.Sc, PGD, M.Sc, and Ph.D) conclude at Chapter 5 (Summary of Findings, Discussion of Findings, Conclusions, and Policy Recommendations). We ensure your Chapter 4 and Chapter 5 strictly conform to this approved academic structure.'
+      a: 'Yes! Standard Nigerian and Commonwealth university dissertations (ND, B.Sc, PGD, M.Sc, and Ph.D) conclude at Chapter 5 (Summary of Findings, Discussion of Findings, Conclusions, and Policy Recommendations). We ensure your thesis strictly conforms to this standard.'
     },
     {
       q: 'What happens if my project supervisor requests corrections?',
-      a: 'All our projects include 100% Free Supervisor Revision Support! If your supervisor requests adjustments to regression tables, modified hypotheses, or additional citations in Chapter 5, we make the revisions promptly at zero extra fee until you get official defense sign-off.'
+      a: 'All our projects include 100% Free Supervisor Revision Support! If your supervisor requests adjustments to literature, regression models, or discussion paragraphs, we revise your work promptly at zero extra charge until you pass your final defense.'
     },
     {
-      q: 'How fast will my Chapter 4 & 5 analysis be delivered?',
-      a: 'Our standard delivery is 3 to 5 business days for comprehensive Chapter 4 and Chapter 5 analysis. If you are facing an urgent submission deadline, we also provide an Express 48-Hour delivery service without sacrificing methodological accuracy.'
-    },
-    {
-      q: 'Which statistical software packages do your analysts handle?',
-      a: 'We specialize in IBM SPSS (v28/v29), R and R-Studio, Python (Pandas/Scikit-Learn), STATA (v17/v18), Advanced Microsoft Excel (Power Query/VBA), and AMOS for Structural Equation Modeling (SEM).'
-    },
-    {
-      q: 'How can I contact the lead statistician directly?',
+      q: 'How can I contact the lead researcher directly?',
       a: 'You can reach us directly via call or WhatsApp on 08037696091 (+234 803 769 6091), or send an email to jesuniyi4wealth@gmail.com. We respond within minutes.'
     }
   ];
@@ -47,7 +47,7 @@ const FAQ = () => {
             Frequently Asked <span className="gradient-text">Questions</span>
           </h2>
           <p className="section-subtitle">
-            Everything you need to know about uploading Chapters 1 to 3, receiving Chapters 4 &amp; 5, and defense guarantees.
+            Everything you need to know about Full Project Writing, Chapter 4 &amp; 5 data analysis, and proposal services.
           </p>
         </div>
 

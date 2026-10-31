@@ -396,6 +396,34 @@
   border-radius: var(--radius-full);
 }
 
+.service-type-badge {
+  font-size: 0.725rem;
+  font-weight: 700;
+  padding: 0.2rem 0.6rem;
+  border-radius: var(--radius-full);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.service-type-badge.full_project {
+  background: rgba(16, 185, 129, 0.15);
+  color: #065F46;
+  border: 1px solid rgba(16, 185, 129, 0.35);
+}
+
+.service-type-badge.chapter_4_5 {
+  background: rgba(2, 132, 199, 0.12);
+  color: #0369A1;
+  border: 1px solid rgba(2, 132, 199, 0.3);
+}
+
+.service-type-badge.proposal {
+  background: rgba(245, 158, 11, 0.12);
+  color: #B45309;
+  border: 1px solid rgba(245, 158, 11, 0.3);
+}
+
 .project-title {
   font-size: 1.2rem;
   font-weight: 800;
@@ -672,6 +700,81 @@
   color: var(--color-text-muted);
 }
 
+/* Service Options Grid inside Submission Modal */
+.service-selector-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.service-options-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.75rem;
+}
+
+.service-option-card {
+  border: 1.5px solid #CBD5E1;
+  border-radius: var(--radius-md);
+  padding: 0.85rem;
+  background: #F8FAFC;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+}
+
+.service-option-card:hover {
+  border-color: var(--color-accent-emerald);
+  background: rgba(0, 210, 160, 0.04);
+}
+
+.service-option-card.selected {
+  border-color: var(--color-accent-emerald);
+  background: rgba(0, 210, 160, 0.08);
+  box-shadow: 0 4px 12px rgba(0, 210, 160, 0.15);
+}
+
+.opt-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.4rem;
+}
+
+.opt-icon {
+  color: var(--color-accent-emerald);
+}
+
+.opt-tag {
+  font-size: 0.625rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  background: var(--color-accent-emerald);
+  color: #060B19;
+  padding: 0.15rem 0.4rem;
+  border-radius: var(--radius-full);
+}
+
+.opt-tag.alt {
+  background: #E2E8F0;
+  color: #475569;
+}
+
+.service-option-card strong {
+  font-size: 0.825rem;
+  color: var(--color-primary);
+  line-height: 1.25;
+  margin-bottom: 0.25rem;
+}
+
+.service-option-card p {
+  font-size: 0.725rem;
+  color: #64748B;
+  line-height: 1.4;
+  margin: 0;
+}
+
 .form-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -805,6 +908,109 @@
   font-size: 0.9rem;
   color: var(--color-text-muted);
   max-width: 440px;
+}
+
+/* Service Selection Cards in Modal */
+.service-options-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.75rem;
+  margin-top: 0.35rem;
+}
+
+.service-option-card {
+  background: #FFFFFF;
+  border: 1.5px solid #CBD5E1;
+  border-radius: var(--radius-md);
+  padding: 0.85rem;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  display: flex;
+  flex-direction: column;
+}
+
+.service-option-card:hover {
+  border-color: #00B4D8;
+  background: #F8FAFC;
+}
+
+.service-option-card.selected {
+  border-color: #00D2A0;
+  background: rgba(0, 210, 160, 0.06);
+  box-shadow: 0 0 0 2px rgba(0, 210, 160, 0.2);
+}
+
+.opt-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.4rem;
+}
+
+.opt-icon {
+  color: #0284C7;
+}
+
+.service-option-card.selected .opt-icon {
+  color: #059669;
+}
+
+.opt-tag {
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  background: #00D2A0;
+  color: #060B19;
+  padding: 0.15rem 0.45rem;
+  border-radius: var(--radius-full);
+}
+
+.opt-tag.alt {
+  background: #E2E8F0;
+  color: #475569;
+}
+
+.service-option-card strong {
+  font-size: 0.825rem;
+  color: var(--color-primary);
+  margin-bottom: 0.25rem;
+  line-height: 1.3;
+}
+
+.service-option-card p {
+  font-size: 0.725rem;
+  color: #64748B;
+  margin: 0;
+  line-height: 1.35;
+}
+
+/* Service Type Badges */
+.service-type-badge {
+  font-size: 0.725rem;
+  font-weight: 700;
+  padding: 0.2rem 0.55rem;
+  border-radius: var(--radius-full);
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
+}
+
+.service-type-badge.full_project {
+  background: rgba(0, 210, 160, 0.15);
+  color: #047857;
+  border: 1px solid rgba(0, 210, 160, 0.35);
+}
+
+.service-type-badge.chapter_4_5 {
+  background: rgba(0, 180, 216, 0.15);
+  color: #0284C7;
+  border: 1px solid rgba(0, 180, 216, 0.35);
+}
+
+.service-type-badge.proposal {
+  background: rgba(245, 158, 11, 0.15);
+  color: #D97706;
+  border: 1px solid rgba(245, 158, 11, 0.35);
 }
 
 /* ==========================================
@@ -970,6 +1176,11 @@
   .form-row {
     grid-template-columns: 1fr;
     gap: 0.75rem;
+  }
+
+  .service-options-grid {
+    grid-template-columns: 1fr;
+    gap: 0.6rem;
   }
 }
 

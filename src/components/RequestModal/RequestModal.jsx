@@ -8,7 +8,7 @@ const RequestModal = ({ isOpen, onClose, initialService = '', onDirectToUpload }
     phone: '',
     email: '',
     level: 'B.Sc / HND',
-    service: initialService || 'Complete Chapter 4 & 5 Analysis (From Ch 1-3 Upload)',
+    service: initialService || '1. Full Project Writing (Chapters 1 to 5 from Scratch)',
     tool: 'IBM SPSS',
     deadline: 'Within 1 Week',
     topic: ''
@@ -30,7 +30,7 @@ const RequestModal = ({ isOpen, onClose, initialService = '', onDirectToUpload }
 
   const handleWhatsAppSubmit = (e) => {
     e.preventDefault();
-    const text = `*New Analysis Request via 4JJCONCEPT Website:*
+    const text = `*New Research Project Request via 4JJCONCEPT Website:*
 *Client Name:* ${formData.name}
 *WhatsApp No:* ${formData.phone}
 *Email:* ${formData.email || 'Not provided'}
@@ -59,7 +59,7 @@ const RequestModal = ({ isOpen, onClose, initialService = '', onDirectToUpload }
             </div>
             <h3 className="modal-success-title">Inquiry Forwarded!</h3>
             <p className="modal-success-text">
-              We have forwarded your inquiry to our lead statistician on WhatsApp (<strong>08037696091</strong>). You can also upload your <strong>Chapters 1 to 3</strong> directly into your student account for immediate processing.
+              We have forwarded your inquiry to our lead consultant on WhatsApp (<strong>08037696091</strong>). You can also upload your <strong>project topic or proposal draft</strong> directly into your student account for immediate processing.
             </p>
             <button 
               onClick={() => {
@@ -69,7 +69,7 @@ const RequestModal = ({ isOpen, onClose, initialService = '', onDirectToUpload }
               className="btn btn-primary w-100 mb-2"
             >
               <UploadCloud size={18} />
-              <span>Proceed to Upload Chapters 1 to 3</span>
+              <span>Proceed to Upload Topic / Draft</span>
             </button>
             <button 
               onClick={handleWhatsAppSubmit} 
@@ -95,9 +95,9 @@ const RequestModal = ({ isOpen, onClose, initialService = '', onDirectToUpload }
                 <Sparkles size={14} />
                 <span>4JJCONCEPT Fast Project Assessment</span>
               </div>
-              <h3 className="modal-title">Request Data Analysis &amp; Thesis Support</h3>
+              <h3 className="modal-title">Request Project Writing &amp; Research Support</h3>
               <p className="modal-subtitle">
-                Fill this quick form and our lead statistician will provide an instant quote and review your Chapter 1 to 5 requirements.
+                Fill this quick form and our lead consultant will provide an instant quote for your Full Project (Chapters 1 to 5), Chapter 4 &amp; 5 Analysis, or Proposal.
               </p>
             </div>
 
@@ -169,8 +169,9 @@ const RequestModal = ({ isOpen, onClose, initialService = '', onDirectToUpload }
                   onChange={handleChange} 
                   className="modal-input"
                 >
-                  <option value="Complete Chapter 4 & 5 Analysis (From Ch 1-3 Upload)">Complete Chapter 4 &amp; 5 Analysis (From Ch 1-3 Upload)</option>
-                  <option value="Chapter 4 Only (Data Analysis & Hypothesis Testing)">Chapter 4 Only (Data Analysis &amp; Hypothesis Testing)</option>
+                  <option value="1. Full Project Writing (Chapters 1 to 5 from Scratch)">1. Full Project Writing (Chapters 1 to 5 from Scratch)</option>
+                  <option value="2. Chapter 4 & 5 Data Analysis & Discussion (From Ch 1-3 Upload)">2. Chapter 4 &amp; 5 Data Analysis &amp; Discussion (From Ch 1-3 Upload)</option>
+                  <option value="3. Research Proposal & Synopsis Writing">3. Research Proposal &amp; Synopsis Writing</option>
                   <option value="Chapters 1 to 3 Methodology Review">Chapters 1 to 3 Methodology Review</option>
                   <option value="Plagiarism Reduction & Turnitin Clearance">Plagiarism Reduction &amp; Turnitin Clearance</option>
                   <option value="Questionnaire Design & Reliability">Questionnaire Design &amp; Reliability</option>

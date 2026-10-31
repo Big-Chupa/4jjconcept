@@ -1,5 +1,17 @@
 import React from 'react';
-import { ArrowRight, MessageSquare, CheckCircle2, TrendingUp, Award, UploadCloud, ShieldCheck, Zap } from 'lucide-react';
+import { 
+  ArrowRight, 
+  MessageSquare, 
+  CheckCircle2, 
+  TrendingUp, 
+  Award, 
+  UploadCloud, 
+  ShieldCheck, 
+  Zap, 
+  FileText,
+  BookOpen,
+  Sparkles
+} from 'lucide-react';
 import './Hero.css';
 
 const Hero = ({ onUploadClick, onRequestClick }) => {
@@ -16,15 +28,15 @@ const Hero = ({ onUploadClick, onRequestClick }) => {
         <div className="hero-content">
           <div className="hero-badge">
             <span className="badge-pulse"></span>
-            <span className="badge-text">Nigeria's Leading Research &amp; Data Analytics Agency</span>
+            <span className="badge-text">Nigeria's #1 Full Project &amp; Research Analytics Agency</span>
           </div>
 
           <h1 className="hero-title">
-            Empower Your Research with <span className="gradient-text">Precision Data Analytics</span>
+            Complete Project Writing <span className="gradient-text">From Approved Topic to Final Defense</span>
           </h1>
 
           <p className="hero-description">
-            <strong>4JJCONCEPT Global Services</strong> bridges academic theory and empirical rigor. Upload your <strong>Chapters 1 to 3</strong>; our senior methodology team analyzes your data and delivers complete, defense-ready <strong>Chapter 4 (Data Analysis) &amp; Chapter 5 (Discussion &amp; Recommendations)</strong> directly to your dashboard.
+            <strong>4JJCONCEPT Global Services</strong> turns your research topic into an outstanding, defense-ready thesis. Submit just your <strong>project topic</strong> and we write your <strong>complete project from Chapters 1 through 5</strong>. Already have your proposal? We also specialize in precision <strong>Chapter 4 &amp; 5 empirical data analysis</strong> and <strong>research proposals</strong>.
           </p>
 
           <div className="hero-cta-group">
@@ -33,11 +45,11 @@ const Hero = ({ onUploadClick, onRequestClick }) => {
               className="btn btn-primary hero-primary-btn"
             >
               <UploadCloud size={19} />
-              <span>Upload Chapters 1 to 3</span>
+              <span>Submit Topic for Full Project</span>
             </button>
 
             <a 
-              href="https://wa.me/2348037696091?text=Hello%204JJCONCEPT%2C%20I%20would%20like%20to%20discuss%20my%20data%20analysis%20project." 
+              href="https://wa.me/2348037696091?text=Hello%204JJCONCEPT%2C%20I%20would%20like%20to%20discuss%20my%20academic%20project%20topic." 
               target="_blank" 
               rel="noopener noreferrer" 
               className="btn btn-whatsapp hero-whatsapp-btn"
@@ -47,24 +59,28 @@ const Hero = ({ onUploadClick, onRequestClick }) => {
             </a>
           </div>
 
-          {/* Guarantee Badges */}
+          {/* Core Service Pillar Badges */}
           <div className="hero-guarantees">
             <div className="guarantee-item">
               <CheckCircle2 size={16} className="guarantee-icon" />
-              <span>Chapters 4 &amp; 5 Specialization</span>
+              <span>1. Full Project Writing (Ch 1 - 5)</span>
+            </div>
+            <div className="guarantee-item">
+              <TrendingUp size={16} className="guarantee-icon" />
+              <span>2. Chapter 4 &amp; 5 Data Analysis</span>
+            </div>
+            <div className="guarantee-item">
+              <FileText size={16} className="guarantee-icon" />
+              <span>3. Proposal Writing</span>
             </div>
             <div className="guarantee-item">
               <ShieldCheck size={16} className="guarantee-icon" />
               <span>Free Supervisor Revisions</span>
             </div>
-            <div className="guarantee-item">
-              <Zap size={16} className="guarantee-icon" />
-              <span>Dashboard File Delivery</span>
-            </div>
           </div>
         </div>
 
-        {/* Right Column: Interactive Analytics Visualizer Card */}
+        {/* Right Column: Interactive Project Architecture Visualizer */}
         <div className="hero-visual">
           <div className="visual-card">
             {/* Visual Card Header */}
@@ -76,76 +92,74 @@ const Hero = ({ onUploadClick, onRequestClick }) => {
               </div>
               <div className="visual-model-tag">
                 <span className="status-indicator"></span>
-                <span>4JJCONCEPT Analytical Engine</span>
+                <span>4JJCONCEPT Academic Architecture</span>
               </div>
             </div>
 
-            {/* Model Summary Metrics */}
+            {/* 3 Core Services Highlight Ribbon */}
+            <div className="hero-pillars-container">
+              <div className="pillar-row active-flagship">
+                <div className="pillar-badge-num">1</div>
+                <div className="pillar-info">
+                  <strong>Full Project Writing (Chapters 1 to 5)</strong>
+                  <span>Topic Only Needed • Complete Preliminaries to Appendices</span>
+                </div>
+                <span className="pillar-tag-featured">Major Focus</span>
+              </div>
+
+              <div className="pillar-row">
+                <div className="pillar-badge-num">2</div>
+                <div className="pillar-info">
+                  <strong>Chapter 4 &amp; 5 Data Analysis</strong>
+                  <span>Upload Ch 1-3 • Empirical Testing (SPSS/R/Python)</span>
+                </div>
+              </div>
+
+              <div className="pillar-row">
+                <div className="pillar-badge-num">3</div>
+                <div className="pillar-info">
+                  <strong>Research Proposals &amp; Synopsis</strong>
+                  <span>Problem Statement, Hypotheses &amp; Methodology</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Quality Summary Metrics */}
             <div className="visual-metrics-grid">
               <div className="metric-box">
-                <span className="metric-label">Regression Fit (R²)</span>
+                <span className="metric-label">Scope</span>
+                <div className="metric-value-row">
+                  <span className="metric-value">Ch 1 - 5</span>
+                  <span className="metric-tag verified">Complete</span>
+                </div>
+                <span className="metric-sub">Start to Finish</span>
+              </div>
+
+              <div className="metric-box">
+                <span className="metric-label">Turnitin</span>
+                <div className="metric-value-row">
+                  <span className="metric-value">&lt; 15%</span>
+                  <span className="metric-tag positive">Safe</span>
+                </div>
+                <span className="metric-sub">Similarity Guaranteed</span>
+              </div>
+
+              <div className="metric-box">
+                <span className="metric-label">Empirical Fit (R²)</span>
                 <div className="metric-value-row">
                   <span className="metric-value">0.942</span>
-                  <span className="metric-tag positive">+18.4%</span>
-                </div>
-                <span className="metric-sub">Variance Explained</span>
-              </div>
-
-              <div className="metric-box">
-                <span className="metric-label">Reliability (α)</span>
-                <div className="metric-value-row">
-                  <span className="metric-value">0.891</span>
-                  <span className="metric-tag verified">High</span>
-                </div>
-                <span className="metric-sub">Cronbach's Alpha</span>
-              </div>
-
-              <div className="metric-box">
-                <span className="metric-label">Sample (N)</span>
-                <div className="metric-value-row">
-                  <span className="metric-value">450</span>
-                  <span className="metric-tag neutral">95% CI</span>
-                </div>
-                <span className="metric-sub">Valid Respondents</span>
-              </div>
-
-              <div className="metric-box">
-                <span className="metric-label">p-value</span>
-                <div className="metric-value-row">
-                  <span className="metric-value">&lt; 0.001</span>
                   <span className="metric-tag highlight">Sig.</span>
                 </div>
-                <span className="metric-sub">Hypothesis Accepted</span>
+                <span className="metric-sub">SPSS / R / STATA</span>
               </div>
-            </div>
 
-            {/* Visual Chart Bars Preview */}
-            <div className="visual-chart-box">
-              <div className="chart-header">
-                <span className="chart-title">Chapter 4 Hypothesis Testing Distribution</span>
-                <span className="chart-badge">SPSS / R-Studio Output</span>
-              </div>
-              <div className="chart-bars">
-                <div className="bar-col">
-                  <div className="bar-fill" style={{ height: '78%' }}></div>
-                  <span className="bar-label">Hyp. 1</span>
+              <div className="metric-box">
+                <span className="metric-label">Revisions</span>
+                <div className="metric-value-row">
+                  <span className="metric-value">100%</span>
+                  <span className="metric-tag neutral">Free</span>
                 </div>
-                <div className="bar-col">
-                  <div className="bar-fill" style={{ height: '92%' }}></div>
-                  <span className="bar-label">Hyp. 2</span>
-                </div>
-                <div className="bar-col">
-                  <div className="bar-fill highlight" style={{ height: '98%' }}></div>
-                  <span className="bar-label">Hyp. 3</span>
-                </div>
-                <div className="bar-col">
-                  <div className="bar-fill" style={{ height: '85%' }}></div>
-                  <span className="bar-label">Hyp. 4</span>
-                </div>
-                <div className="bar-col">
-                  <div className="bar-fill" style={{ height: '89%' }}></div>
-                  <span className="bar-label">Hyp. 5</span>
-                </div>
+                <span className="metric-sub">Supervisor Alignment</span>
               </div>
             </div>
 
@@ -154,15 +168,15 @@ const Hero = ({ onUploadClick, onRequestClick }) => {
               <Award size={20} className="badge-icon gold" />
               <div>
                 <strong>Oral Defense Ready</strong>
-                <span>100% Approval Rate</span>
+                <span>100% Approval Record</span>
               </div>
             </div>
 
             <div className="floating-badge badge-bottom-left animate-float" style={{ animationDelay: '2s' }}>
-              <TrendingUp size={20} className="badge-icon emerald" />
+              <BookOpen size={20} className="badge-icon emerald" />
               <div>
-                <strong>Chapters 4 &amp; 5 Formatted</strong>
-                <span>APA 7th Standard</span>
+                <strong>From Topic to Thesis</strong>
+                <span>Full Chapter 1 to 5 Delivery</span>
               </div>
             </div>
           </div>

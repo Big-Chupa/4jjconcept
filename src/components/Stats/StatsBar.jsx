@@ -7,8 +7,8 @@ const StatsBar = () => {
     {
       icon: <GraduationCap size={28} className="stat-icon" />,
       number: '500+',
-      label: 'Projects Analyzed',
-      sub: 'B.Sc, M.Sc & Ph.D Level',
+      label: 'Projects & Theses Delivered',
+      sub: 'Complete Chapters 1 to 5',
       color: 'emerald'
     },
     {

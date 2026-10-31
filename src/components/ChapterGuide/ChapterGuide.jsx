@@ -17,23 +17,23 @@ const ChapterGuide = ({ onUploadClick, onWhatsAppClick }) => {
   const workflowStages = [
     {
       id: 'chapters1to3',
-      stageTag: 'Uploaded by Student',
+      stageTag: 'Written from Topic / Student Draft',
       tagColor: 'blue',
       tabLabel: 'Chapters 1 to 3',
       title: 'Chapters 1 - 3: Background, Literature & Methodology',
-      subtitle: 'You upload your approved proposal or initial chapters to the 4JJCONCEPT student portal.',
+      subtitle: 'Written completely from scratch for Full Project requests, or uploaded by the student if you already have your proposal approved.',
       icon: <BookOpen size={24} />,
-      role: 'Student Upload',
+      role: 'Full Project or Draft',
       points: [
         'Chapter 1: Background of Study, Problem Statement, Research Questions & Hypotheses formulation',
-        'Chapter 2: Conceptual Review, Theoretical Framework (e.g. Agency Theory, Technology Acceptance Model), and Empirical Review',
+        'Chapter 2: Conceptual Review, Theoretical Framework (e.g. Agency Theory, Technology Acceptance Model), and Empirical Review (2020-2026)',
         'Chapter 3: Research Design (Survey, Ex-post facto, Experimental), Population of study',
         'Scientific Sample Size determination (Taro Yamane, Cochran, or Krejcie & Morgan formula)',
         'Sampling Techniques (Stratified, Purposive, or Simple Random Sampling)',
-        'Research Instrument (Questionnaire or secondary financial statement retrieval structure)'
+        'Research Instrument (Questionnaire design or secondary financial data retrieval schedule)'
       ],
-      actionText: 'Upload Chapters 1 to 3 Now',
-      deliverable: 'Uploaded by you via your student dashboard. Our team immediately reviews your model specification and objectives.'
+      actionText: 'Submit Topic or Draft Now',
+      deliverable: 'Written from scratch for Full Project clients, or reviewed immediately if you upload an existing proposal draft.'
     },
     {
       id: 'chapter4',
@@ -84,13 +84,13 @@ const ChapterGuide = ({ onUploadClick, onWhatsAppClick }) => {
       <div className="container">
         <div className="section-header">
           <div className="section-tag light">
-            <span>Seamless 3-Step Research Pipeline</span>
+            <span>Rigorous 5-Chapter Architecture</span>
           </div>
           <h2 className="section-title">
-            From Chapters 1–3 Upload to <span className="gradient-text">Chapter 4 &amp; 5 Delivery</span>
+            Academic Research Structure: <span className="gradient-text">Chapters 1 Through 5</span>
           </h2>
           <p className="section-subtitle">
-            At 4JJCONCEPT, academic research stops at <strong>Chapter 5</strong>. You submit your proposal drafts (Chapters 1 to 3), and our expert statisticians execute and deliver Chapters 4 and 5 directly back to your dashboard.
+            At 4JJCONCEPT, academic research stops at <strong>Chapter 5</strong>. Whether we write your <strong>Complete Project (Chapters 1 to 5) from scratch</strong> starting from just your topic, or execute <strong>Chapter 4 &amp; 5 data analysis</strong> for your existing drafts, we ensure supervisor defense success.
           </p>
         </div>
 
@@ -141,7 +141,7 @@ const ChapterGuide = ({ onUploadClick, onWhatsAppClick }) => {
                 className="btn btn-primary"
               >
                 <UploadCloud size={17} />
-                <span>Upload Chapters 1 to 3 for Analysis</span>
+                <span>Submit Topic / Draft for Writing</span>
               </button>
 
               <a 
